@@ -1,3 +1,6 @@
+package ru.task.tracker;
+import ru.task.tracker.manager.*;
+import ru.task.tracker.manager.tasks.*;
 /**
  * Основной класс приложения
  * @author Линник Данил
@@ -15,12 +18,14 @@ public class Main {
             manager.createTask(task2);
             Task task3 = new Task("Курс", "Написать тз");
             task3.setId(1);
+            task3.setStatus(1);
             manager.updateTask(task3);
             System.out.println(manager.getAllTasks());
             manager.removeTaskById(1);
             System.out.println(manager.getAllTasks());
             manager.createTask(task1);
             System.out.println(manager.getTaskById(3));
+            task1.setStatus(2);
             System.out.println(manager.getAllTasks());
             manager.clearAllTasks();
             System.out.println(manager.getAllTasks());
@@ -33,39 +38,45 @@ public class Main {
             System.out.println(manager.getAllEpics());
             Epic epic3 = new Epic("Купить продукты", "Купить разные категории продуктов");
             epic3.setId(4);
-            epic3.setStatus(1);
             manager.updateEpic(epic3);
-            System.out.println(manager.getAllEpics());
-            epic2.setStatus(2);
             System.out.println(manager.getEpicById(5));
+            System.out.println(manager.getAllEpics());
+
 
             System.out.println("\n3 - Subtasks");
             //manager.clearAllEpics(); //проверка на вылет из приложения, в случае отсутсвия эпиков
             Subtask subtask1 = new Subtask("Сладости", "купить сладости");
-            manager.createSubtask(4, subtask1);
+            subtask1.setEpicId(4);
+            manager.createSubtask(subtask1);
+            System.out.println(manager.getAllSubtask());
             Subtask subtask2 = new Subtask("Мясо", "купить колбасу и курицу");
-            manager.createSubtask(4, subtask2);
+            subtask2.setEpicId(4);
+            manager.createSubtask(subtask2);
             Subtask subtask3 = new Subtask("Кухня", "Сделать ремнонт на кухне");
-            manager.createSubtask(5, subtask3);
+            subtask3.setEpicId(5);
+            manager.createSubtask(subtask3);
             Subtask subtask4 = new Subtask("Ванна", "Сделать ремонт в ванной");
-            manager.createSubtask(5, subtask4);
+            subtask4.setEpicId(5);
+            manager.createSubtask(subtask4);
             System.out.println(manager.getAllSubtask());
             System.out.println(manager.getAllEpics());
             Subtask subtask5 = new Subtask("Молочка", "Купить молоко и творог");
+            subtask5.setEpicId(4);
             subtask5.setId(6);
-            manager.updateSubtask(4, subtask5);
+            manager.updateSubtask(subtask5);
             Subtask subtask6 = new Subtask("Зал", "Повесить красивую люстру");
+            subtask6.setEpicId(5);
             subtask6.setId(8);
-            manager.updateSubtask(5, subtask6);
+            manager.updateSubtask(subtask6);
             System.out.println(manager.getAllSubtask());
             System.out.println(manager.getAllEpics());
-            System.out.println(manager.getSubtaskById(5, 8));
+            System.out.println(manager.getSubtaskById(8));
             System.out.println("3.1");
             System.out.println(manager.getAllSubtaskByEpicId(5));
 
             //manager.clearAllEpics(); ещё одна проверка на вылеты и неправильное решение задач
             System.out.println("\n4 - remove and clear subtasks");
-            manager.removeSubtaskById(4, 6);
+            manager.removeSubtaskById(6);
             System.out.println(manager.getAllSubtask());
             System.out.println(manager.getAllEpics());
             manager.clearAllSubtasks();
@@ -87,9 +98,11 @@ public class Main {
             manager.createEpic(epic5);
             System.out.println(manager.getAllEpics());
             Subtask subtask7 = new Subtask("Сладости", "купить сладости");
-            manager.createSubtask(11, subtask7);
+            subtask7.setEpicId(11);
+            manager.createSubtask(subtask7);
             Subtask subtask8 = new Subtask("Мясо", "купить колбасу и курицу");
-            manager.createSubtask(11, subtask8);
+            subtask8.setEpicId(11);
+            manager.createSubtask(subtask8);
             System.out.println(manager.getAllEpics());
             manager.removeEpicById(11);
             System.out.println(manager.getAllEpics());
@@ -98,6 +111,8 @@ public class Main {
             System.out.println(manager.getAllEpics());
             System.out.println(manager.getAllSubtask());
             manager.removeEpicById(14);
+            System.out.println(manager.getAllEpics());
+            System.out.println(manager.getAllSubtask());
 
 
             System.out.println();
@@ -115,27 +130,37 @@ public class Main {
             System.out.println();
             System.out.println("Проверка обновления Epics");
             System.out.println(manager.getAllEpics());
-            manager.createEpic(epic1);
-            manager.createEpic(epic2);
-            //epic1.setStatus(1);
             System.out.println(manager.getAllEpics());
 
-            manager.createSubtask(16, subtask1);
-            manager.createSubtask(16, subtask2);
-            manager.createSubtask(16, subtask3);
+            subtask1.setEpicId(14);
+            manager.createSubtask(subtask1);
+            subtask2.setEpicId(14);
+            manager.createSubtask(subtask2);
+            subtask4.setEpicId(14);
+            manager.createSubtask(subtask4);
 
             System.out.println(manager.getAllEpics());
             subtask1.setStatus(2);
             subtask2.setStatus(2);
-            subtask3.setStatus(1);
+            subtask4.setStatus(1);
 
-            manager.updateSubtask(16, subtask1);
-            manager.updateSubtask(16, subtask2);
-            manager.updateSubtask(16, subtask3);
+            manager.updateSubtask(subtask1);
+            manager.updateSubtask( subtask2);
+            manager.updateSubtask( subtask4);
             System.out.println(manager.getAllEpics());
-            subtask3.setStatus(2);
-            manager.updateSubtask(16, subtask3);
+            manager.createEpic(epic1);
+            subtask4.setStatus(2);
+            manager.updateSubtask(subtask4);
             System.out.println(manager.getAllEpics());
+
+
+            System.out.println("\nУдалить всё");
+            manager.clearAllTasks();
+            manager.clearAllEpics();
+
+            System.out.println(manager.getAllTasks());
+            System.out.println(manager.getAllEpics());
+            System.out.println(manager.getAllSubtask());
         }//Проверки
     }
 }

@@ -1,26 +1,35 @@
-import java.util.HashMap;
+package ru.task.tracker.manager.tasks;
+
+import java.util.ArrayList;
 
 /**
  * Класс, отвечающий за создание епиков (задач с подзадачами).
  * Является дочерним классом {@link Task}
  */
 public class Epic extends Task {
-    private HashMap<Integer, Subtask> subtasks;
+    private ArrayList<Integer> subtasks;
 
     public Epic(String name, String description) {
         super(name, description);
-        subtasks = new HashMap<>();
+        subtasks = new ArrayList<>();
     }
 
-    public void putSubtask(Subtask subtask) {
-        subtasks.put(subtask.getId(), subtask);
+    public void addSubtask(int SubtaskId) {
+        subtasks.add(SubtaskId);
     }
 
-    public HashMap<Integer, Subtask> getSubtasks() {
-        if (this != null) {
+    public ArrayList<Integer> getSubtasks() {
+        if (!subtasks.isEmpty()) {
             return subtasks;
         }
         return null;
+    }
+    public void removeSubtask(Integer subtaskId){
+        subtasks.remove(subtaskId);
+    }
+
+    public void clearSubtasks(){
+        subtasks.clear();
     }
 
     /**
@@ -31,31 +40,7 @@ public class Epic extends Task {
      *
      * @return статус
      */
-    public String updateStatus() {
-        int numberSubtasks = subtasks.size();
-        int i = 0;
-        for (Subtask s : subtasks.values()) {
-            if (s.getStatus().equals(STATUSES[0])) {
-                i++;
-            }
-        }
-        if (i == numberSubtasks) {
-            setStatus(0);
-            return STATUSES[0];
-        }
-        i = 0;
-        for (Subtask s : subtasks.values()) {
-            if (s.getStatus().equals(STATUSES[2])) {
-                i++;
-            }
-        }
-        if (i == numberSubtasks) {
-            setStatus(2);
-            return STATUSES[2];
-        }
-        setStatus(1);
-        return STATUSES[1];
-    }
+
 
     //Используется для вывода в мейне
     @Override

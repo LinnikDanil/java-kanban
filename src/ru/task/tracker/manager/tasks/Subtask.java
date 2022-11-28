@@ -1,9 +1,11 @@
+package ru.task.tracker.manager.tasks;
+
 /**
  * Класс, отвечающий за создание подзадач для класса {@link Epic}.
  * Является дочерним классом {@link Task}
  */
 public class Subtask extends Task {
-    private int epicId; //Знаем, к какому эпику пренадлежим
+    private Integer epicId; //Знаем, к какому эпику пренадлежим
 
     /**
      * Конструктор - создание объекта
@@ -18,6 +20,9 @@ public class Subtask extends Task {
     public void setEpicId(int epicId) {
         this.epicId = epicId;
     }
+    public Integer getEpicId() {
+        return epicId;
+    }
 
     //Используется для вывода в мейне
     @Override
@@ -29,4 +34,6 @@ public class Subtask extends Task {
                 ", status='" + getStatus() + '\'' +
                 '}';
     }
+
+
 }

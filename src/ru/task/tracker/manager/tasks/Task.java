@@ -1,11 +1,11 @@
-import java.util.Objects;
+package ru.task.tracker.manager.tasks;
 
 /**
  * Класс, отвечающий за создание задач.
  * Также является родителем для подклассов {@link Subtask} и {@link Epic}
  */
 public class Task {
-    final static String[] STATUSES = new String[]{"NEW", "IN_PROGRESS", "DONE"};
+    public final static String[] STATUSES = new String[]{"NEW", "IN_PROGRESS", "DONE"};
     private String name; //название задачи
     private String description; //описание задачи
     private int id;
@@ -47,20 +47,6 @@ public class Task {
 
     public String getStatus() {
         return status;
-    }
-
-    //Используется для сравнения статусов в эпике (вроде бы)
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && Objects.equals(status, task.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, description, id, status);
     }
 
     //Используется для вывода в мейне
