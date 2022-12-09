@@ -42,7 +42,12 @@
 ### Классы приложения
 В приложении используется 5 классов:
 1. **ru.task.tracker.Main** - Основной класс приложения, на данный момент используется для тестов приложения
-2. **ru.task.tracker.manager.ImMemoryTaskManagerager.Manager** -  Класс приложения со всей логикой работы, отвечающий за управление классами задач.
-3. **ru.task.tracker.inMemoryTaskManager.tasks.Task** - Класс, отвечающий за создание задач. Также является родителем для подклассов ru.task.tracker.inMemoryTaskManager.tasks.Subtask и ru.task.tracker.inMemoryTaskManager.tasks.Epic.
-4. **ru.task.tracker.inMemoryTaskManager.tasks.Epic** - Класс, отвечающий за создание епиков (задач с подзадачами). Является дочерним классом ru.task.tracker.inMemoryTaskManager.tasks.Task.
-5. **ru.task.tracker.inMemoryTaskManager.tasks.Subtask** - Класс, отвечающий за создание подзадач для класса ru.task.tracker.inMemoryTaskManager.tasks.Epic. Является дочерним классом ru.task.tracker.inMemoryTaskManager.tasks.Task.
+2. **ru.task.tracker.manager.TaskManager** - Интерфейс менеджера задач со всей логикой работы, отвечающий за управление классами задач.
+3. **ru.task.tracker.manager.ImMemoryTaskManagerager** -  Класс менеджера задач, имплементирующий интерфейс со всей логикой работы, отвечающий за управление классами задач.
+4. **ru.task.tracker.manager.HistoryManager** - Интерфейс для управления историей просмотров
+5. **ru.task.tracker.manager.InMemoryHistoryManager** - Класс менеджера истории, имплементирующий интерфейс, отвечает за работу с историей полученных задач.
+6. **ru.task.tracker.manager.Managers** - Утилитарный класс, создающий менеджеры.
+7. **ru.task.tracker.inMemoryTaskManager.tasks.Task** - Класс, отвечающий за создание задач. Также является родителем для подклассов ru.task.tracker.inMemoryTaskManager.tasks.Subtask и ru.task.tracker.inMemoryTaskManager.tasks.Epic.
+8. **ru.task.tracker.inMemoryTaskManager.tasks.Epic** - Класс, отвечающий за создание епиков (задач с подзадачами). Является дочерним классом ru.task.tracker.inMemoryTaskManager.tasks.Task.
+9. **ru.task.tracker.inMemoryTaskManager.tasks.Subtask** - Класс, отвечающий за создание подзадач для класса ru.task.tracker.inMemoryTaskManager.tasks.Epic. Является дочерним классом ru.task.tracker.inMemoryTaskManager.tasks.Task.
+10. **ru.task.tracker.inMemoryTaskManager.tasks.StatusesOfTask** - Перечесление возможных статусов задачи.

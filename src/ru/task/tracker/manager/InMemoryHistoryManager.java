@@ -4,6 +4,9 @@ import ru.task.tracker.manager.tasks.Task;
 
 import java.util.ArrayList;
 
+/**
+ * Класс менеджера истории, имплементирующий интерфейс {@link HistoryManager}, отвечает за работу с историей полученных задач.
+ */
 public class InMemoryHistoryManager implements HistoryManager{
 
     private ArrayList<Task> historyTasks;
