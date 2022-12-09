@@ -5,11 +5,10 @@ package ru.task.tracker.manager.tasks;
  * Также является родителем для подклассов {@link Subtask} и {@link Epic}
  */
 public class Task {
-    public final static String[] STATUSES = new String[]{"NEW", "IN_PROGRESS", "DONE"};
     private String name; //название задачи
     private String description; //описание задачи
     private int id;
-    private String status;  /*NEW — задача только создана, но к её выполнению ещё не приступили.
+    private StatusesOfTask status;  /*NEW — задача только создана, но к её выполнению ещё не приступили.
                              *IN_PROGRESS — над задачей ведётся работа.
                              *DONE — задача выполнена.*/
 
@@ -22,15 +21,15 @@ public class Task {
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status = STATUSES[0];
+        this.status = StatusesOfTask.NEW;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setStatus(int numberOfStatus) {
-        this.status = STATUSES[numberOfStatus];
+    public void setStatus(StatusesOfTask status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -45,7 +44,7 @@ public class Task {
         return description;
     }
 
-    public String getStatus() {
+    public StatusesOfTask getStatus() {
         return status;
     }
 

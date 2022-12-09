@@ -21,14 +21,14 @@ public class Main {
         taskManager.createTask(task2);
         Task task3 = new Task("Курс", "Написать тз");
         task3.setId(1);
-        task3.setStatus(1);
+        task3.setStatus(StatusesOfTask.IN_PROGRESS);
         taskManager.updateTask(task3);
         System.out.println(taskManager.getAllTasks());
         taskManager.removeTaskById(1);
         System.out.println(taskManager.getAllTasks());
         taskManager.createTask(task1);
         System.out.println(taskManager.getTaskById(3));
-        task1.setStatus(2);
+        task1.setStatus(StatusesOfTask.DONE);
         System.out.println(taskManager.getAllTasks());
         taskManager.clearAllTasks();
         System.out.println(taskManager.getAllTasks());
@@ -122,7 +122,7 @@ public class Main {
         taskManager.createTask(task5);
         System.out.println(taskManager.getAllTasks());
         Task task6 = new Task("Уроки", "Сделать уроки");
-        task6.setStatus(1);
+        task6.setStatus(StatusesOfTask.IN_PROGRESS);
         task6.setId(15);
         taskManager.updateTask(task6);
         System.out.println(taskManager.getAllTasks());
@@ -138,22 +138,25 @@ public class Main {
 
         System.out.println("\nПроверка обновления статусов");
         System.out.println(taskManager.getAllEpics());
-        subtask1.setStatus(2);
+        subtask1.setStatus(StatusesOfTask.DONE);
         taskManager.updateSubtask(subtask1);
         System.out.println(taskManager.getAllEpics());
         System.out.println(taskManager.getAllSubtask());
-        subtask2.setStatus(2);
-        subtask4.setStatus(1);
+        subtask2.setStatus(StatusesOfTask.DONE);
+        subtask4.setStatus(StatusesOfTask.IN_PROGRESS);
         System.out.println(taskManager.getAllEpics());
         System.out.println(taskManager.getAllSubtask());
         taskManager.removeSubtaskById(18);
+        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllEpics());
         taskManager.clearAllSubtasks();
         System.out.println(taskManager.getAllSubtask());
         System.out.println(taskManager.getAllEpics());
         taskManager.createSubtask(subtask4);
-        subtask4.setStatus(2);
-        System.out.println(taskManager.getAllEpics());
+        subtask4.setStatus(StatusesOfTask.DONE);
+        taskManager.updateSubtask(subtask4);
         System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllEpics());
 
         System.out.println("\nУдалить всё");
         taskManager.clearAllTasks();

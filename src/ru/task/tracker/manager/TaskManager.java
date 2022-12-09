@@ -1,6 +1,7 @@
 package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.Epic;
+import ru.task.tracker.manager.tasks.StatusesOfTask;
 import ru.task.tracker.manager.tasks.Subtask;
 import ru.task.tracker.manager.tasks.Task;
 import java.util.ArrayList;
@@ -157,7 +158,7 @@ import java.util.ArrayList;
      *
      * @return статус
      */
-     String updateStatusEpic(int epicId);
+     StatusesOfTask updateStatusEpic(int epicId);
 
     /**
      * Метод получения нового айди
