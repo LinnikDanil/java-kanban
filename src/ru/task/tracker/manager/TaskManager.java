@@ -165,4 +165,17 @@ import java.util.ArrayList;
      * @return айди
      */
      int getNewId();
+
+    /**
+     * Метод получения истории из 10 последних задач
+     *
+     * @return список из задач
+     */
+    ArrayList<Task> getHistory();
+
+    /**
+     * Добавляет задачу в исторический список
+     * @param task
+     */
+    void addTaskToHistory(Task task);
 }

@@ -1,7 +1,6 @@
 package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,6 +12,7 @@ public class InMemoryTaskManager implements TaskManager{
     private HashMap<Integer, Task> tasks;
     private HashMap<Integer, Epic> epics;
     private HashMap<Integer, Subtask> subtasks;
+    private ArrayList<Task> historyTasks;
 
     /**
      * Конструктор - создание нового объекта
@@ -24,6 +24,7 @@ public class InMemoryTaskManager implements TaskManager{
         this.tasks = new HashMap<>();
         this.epics = new HashMap<>();
         this.subtasks = new HashMap<>();
+        this.historyTasks = new ArrayList<>();
     }
 
     @Override
@@ -66,16 +67,19 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public Task getTaskById(int taskId) {
+        addTaskToHistory(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
     @Override
     public Epic getEpicById(int epicId) {
+        addTaskToHistory(epics.get(epicId));
         return epics.get(epicId);
     }
 
     @Override
     public Subtask getSubtaskById(int subtaskId) {
+        addTaskToHistory(subtasks.get(subtaskId));
         return subtasks.get(subtaskId);
     }
 
@@ -193,5 +197,18 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public int getNewId() {
         return ++id;
+    }
+
+    @Override
+    public ArrayList<Task> getHistory() {
+        return historyTasks;
+    }
+
+    @Override
+    public void addTaskToHistory(Task task) {
+        if (historyTasks.size() == 10){
+            historyTasks.remove(0);
+        }
+        historyTasks.add(task);
     }
 }
