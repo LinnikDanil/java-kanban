@@ -166,7 +166,7 @@ public class Main {
         System.out.println(taskManager.getAllSubtask());
 
         System.out.println("\n\n Проверка истории");
-        System.out.println(taskManager.getHistory());
+        System.out.println(taskManager.historyManager.getHistory());
 
         taskManager.createTask(task1);
         taskManager.createEpic(epic1);
@@ -177,7 +177,7 @@ public class Main {
         System.out.println(taskManager.getEpicById(21));
         System.out.println(taskManager.getSubtaskById(22));
 
-        System.out.println("\n " + taskManager.getHistory());
+        System.out.println("\n " + taskManager.historyManager.getHistory());
 
         System.out.println(taskManager.getTaskById(20));
         System.out.println(taskManager.getEpicById(21));
@@ -186,11 +186,11 @@ public class Main {
         System.out.println(taskManager.getEpicById(21));
         System.out.println(taskManager.getSubtaskById(22));
 
-        System.out.println("\n " + taskManager.getHistory());
+        System.out.println("\n " + taskManager.historyManager.getHistory());
 
         taskManager.createTask(task2);
         System.out.println(taskManager.getTaskById(23));
 
-        System.out.println("\n " + taskManager.getHistory());
+        System.out.println("\n " + taskManager.historyManager.getHistory());
     }
 }
