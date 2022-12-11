@@ -48,7 +48,6 @@ public class Task {
         return status;
     }
 
-    //Используется для вывода в мейне
     @Override
     public String toString() {
         return "Task{" +

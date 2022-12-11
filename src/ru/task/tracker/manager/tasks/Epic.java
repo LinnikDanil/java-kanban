@@ -29,7 +29,6 @@ public class Epic extends Task {
         subtasks.clear();
     }
 
-    //Используется для вывода в мейне
     @Override
     public String toString() {
         return "Epic{" +

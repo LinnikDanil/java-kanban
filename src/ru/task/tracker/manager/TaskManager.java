@@ -76,41 +76,39 @@ import java.util.ArrayList;
      * Создание таска - кладёт объект в таблицу
      *
      * @param task
-     * @return task
+     * @return taskId
      */
-     Task createTask(Task task);
+     int createTask(Task task);
 
     /**
      * Создание эпика - кладёт объект в таблицу
      *
      * @param epic
-     * @return epic
+     * @return epidId
      */
-     Epic createEpic(Epic epic);
+    int createEpic(Epic epic);
 
     /**
      * Создание сабтаска - кладёт объект в таблицу, добавляет эпик айди в сабтаске и айди сабтаска в эпик
      *
      * @param subtask
-     * @return subtask
+     * @return subtaskId
      */
-     Subtask createSubtask(Subtask subtask);
+    int createSubtask(Subtask subtask);
 
     /**
      * обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
      *
      * @param task
-     * @return task
      */
-     Task updateTask(Task task);
+     void updateTask(int taskId, Task task);
 
     /**
      * обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
      *
      * @param epic
-     * @return epic
      */
-     Epic updateEpic(Epic epic);
+    void updateEpic(int epicId, Epic epic);
 
     /**
      * обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра,
@@ -118,7 +116,7 @@ import java.util.ArrayList;
      *
      * @param subtask
      */
-     void updateSubtask(Subtask subtask);
+     void updateSubtask(int subtaskId, Subtask subtask);
 
     /**
      * Удаление таска по идентификатору
@@ -149,22 +147,4 @@ import java.util.ArrayList;
      * @return список сабтасков
      */
      ArrayList<Integer> getAllSubtaskByEpicId(int epicId);
-
-    /**
-     * метод обновления статуса эпика
-     * -если у эпика нет подзадач или все они имеют статус NEW, то статус должен быть NEW.
-     * -если все подзадачи имеют статус DONE, то и эпик считается завершённым — со статусом DONE.
-     * -во всех остальных случаях статус должен быть IN_PROGRESS.
-     *
-     * @return статус
-     */
-     StatusesOfTask updateStatusEpic(int epicId);
-
-    /**
-     * Метод получения нового айди
-     *
-     * @return айди
-     */
-     int getNewId();
-
 }
