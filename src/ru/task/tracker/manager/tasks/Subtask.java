@@ -18,6 +18,19 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
+    /**
+     * Конструктор - обновление метода
+     * @param id
+     * @param name
+     * @param description
+     * @param status
+     * @param epicId
+     */
+    public Subtask(int id, String name, String description, StatusesOfTask status, int epicId) {
+        super(id, name, description, status);
+        this.epicId = epicId;
+    }
+
     public void setEpicId(int epicId) {
 
         this.epicId = epicId;

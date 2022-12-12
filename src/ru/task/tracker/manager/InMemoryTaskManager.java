@@ -110,28 +110,26 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     @Override
-    public void updateTask(int taskId, Task task) {
-        if (tasks.containsKey(taskId)){
-            task.setId(taskId);
-            tasks.put(taskId, task);
+    public void updateTask(Task task) {
+        if (tasks.containsKey(task.getId())){
+            tasks.put(task.getId(), task);
         }
     }
 
     @Override
-    public void updateEpic(int epicId, Epic epic) {
-        if (epics.containsKey(epicId)){
-            epic.setId(epicId);
-            epics.put(epicId, epic);
+    public void updateEpic(Epic epic) {
+        if (epics.containsKey(epic.getId())){
+            epic.setSubtasks(epics.get(epic.getId()).getSubtasks()); //Пермещение сабтасков со старого эпика в новый
+            epics.put(epic.getId(), epic);
         }
+        updateStatusEpic(epic.getId());
     }
 
     @Override
-    public void updateSubtask(int subtaskId, Subtask subtask) {
-        if (subtasks.containsKey(subtaskId)){
+    public void updateSubtask(Subtask subtask) {
+        if (subtasks.containsKey(subtask.getId())){
             if (epics.containsKey(subtask.getEpicId())) {
-                subtask.setId(subtaskId);
-                subtask.setStatus(subtasks.get(subtaskId).getStatus());
-                subtasks.put(subtaskId, subtask);
+                subtasks.put(subtask.getId(), subtask);
                 updateStatusEpic(subtask.getEpicId());
             }
         }

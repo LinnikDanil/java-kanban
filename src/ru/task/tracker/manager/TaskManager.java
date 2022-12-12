@@ -101,14 +101,14 @@ import java.util.ArrayList;
      *
      * @param task
      */
-     void updateTask(int taskId, Task task);
+     void updateTask(Task task);
 
     /**
      * обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
      *
      * @param epic
      */
-    void updateEpic(int epicId, Epic epic);
+    void updateEpic(Epic epic);
 
     /**
      * обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра,
@@ -116,7 +116,7 @@ import java.util.ArrayList;
      *
      * @param subtask
      */
-     void updateSubtask(int subtaskId, Subtask subtask);
+     void updateSubtask(Subtask subtask);
 
     /**
      * Удаление таска по идентификатору

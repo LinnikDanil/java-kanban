@@ -24,6 +24,20 @@ public class Task {
         this.status = StatusesOfTask.NEW;
     }
 
+    /**
+     * Конструктор для обновления таска и сабтаска
+     * @param id
+     * @param name
+     * @param description
+     * @param status
+     */
+    public Task(int id, String name, String description, StatusesOfTask status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

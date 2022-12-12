@@ -7,10 +7,28 @@ import java.util.ArrayList;
  * Является дочерним классом {@link Task}
  */
 public class Epic extends Task {
+
+
     private ArrayList<Integer> subtasks;
 
+    /**
+     * Конструктор - создание объекта
+     * @param name
+     * @param description
+     */
     public Epic(String name, String description) {
         super(name, description);
+        subtasks = new ArrayList<>();
+    }
+
+    /**
+     * Конструктор - обновление объекта
+     * @param id
+     * @param name
+     * @param description
+     */
+    public Epic(int id, String name, String description) {
+        super(id, name, description, StatusesOfTask.NEW);
         subtasks = new ArrayList<>();
     }
 
@@ -21,6 +39,11 @@ public class Epic extends Task {
     public ArrayList<Integer> getSubtasks() {
         return subtasks;
     }
+
+    public void setSubtasks(ArrayList<Integer> subtasks) {
+        this.subtasks = subtasks;
+    }
+
     public void removeSubtask(Integer subtaskId){
         subtasks.remove(subtaskId);
     }
