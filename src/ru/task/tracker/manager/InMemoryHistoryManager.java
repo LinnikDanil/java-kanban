@@ -2,7 +2,7 @@ package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.Task;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Класс менеджера истории, имплементирующий интерфейс {@link HistoryManager}, отвечает за работу с историей полученных задач.
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class InMemoryHistoryManager implements HistoryManager{
 
     private static final int HISTORY_SIZE = 10;
-    private ArrayList<Task> historyTasks;
+    private LinkedList<Task> historyTasks;
 
     public InMemoryHistoryManager() {
-        this.historyTasks = new ArrayList<>();
+        this.historyTasks = new LinkedList<>();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class InMemoryHistoryManager implements HistoryManager{
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public LinkedList<Task> getHistory() {
         return historyTasks;
     }
 

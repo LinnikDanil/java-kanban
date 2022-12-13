@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Epic extends Task {
 
 
-    private ArrayList<Integer> subtasks;
+    private final ArrayList<Integer> subtasks;
 
     /**
      * Конструктор - создание объекта
@@ -41,7 +41,9 @@ public class Epic extends Task {
     }
 
     public void setSubtasks(ArrayList<Integer> subtasks) {
-        this.subtasks = subtasks;
+        for(int subtask : subtasks){
+            this.subtasks.add(subtask);
+        }
     }
 
     public void removeSubtask(Integer subtaskId){
