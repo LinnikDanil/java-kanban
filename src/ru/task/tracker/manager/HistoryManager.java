@@ -16,6 +16,12 @@ public interface HistoryManager {
     void add(Task task);
 
     /**
+     * Метод удаляет задачу из истории
+     * @param task
+     */
+    void remove(Task task);
+
+    /**
      * Метод получения истории из 10 последних задач
      *
      * @return список из задач

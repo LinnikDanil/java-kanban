@@ -103,18 +103,21 @@ public class Main {
 
         System.out.println("\nПроверка истории");
         System.out.println(taskManager.historyManager.getHistory());
-        taskId1 = taskManager.createTask(new Task("Таск1", "Таск1"));
-        taskId2 = taskManager.createTask(new Task("Таск2", "Таск2"));
-        taskManager.getTaskById(taskId1);
-        taskManager.getTaskById(taskId2);
+        taskManager.clearAllTasks();
+        taskManager.clearAllEpics();
         System.out.println(taskManager.historyManager.getHistory());
-        taskManager.getTaskById(taskId1);
-        taskManager.getTaskById(taskId2);
-        System.out.println(taskManager.historyManager.getHistory());
-        taskManager.getTaskById(taskId1);
-        taskManager.getTaskById(taskId2);
-        System.out.println(taskManager.historyManager.getHistory());
-        taskManager.getTaskById(taskId2);
-        System.out.println(taskManager.historyManager.getHistory());
+//        taskId1 = taskManager.createTask(new Task("Таск1", "Таск1"));
+//        taskId2 = taskManager.createTask(new Task("Таск2", "Таск2"));
+//        taskManager.getTaskById(taskId1);
+//        taskManager.getTaskById(taskId2);
+//        System.out.println(taskManager.historyManager.getHistory());
+//        taskManager.getTaskById(taskId1);
+//        taskManager.getTaskById(taskId2);
+//        System.out.println(taskManager.historyManager.getHistory());
+//        taskManager.getTaskById(taskId1);
+//        taskManager.getTaskById(taskId2);
+//        System.out.println(taskManager.historyManager.getHistory());
+//        taskManager.getTaskById(taskId2);
+//        System.out.println(taskManager.historyManager.getHistory());
     }
 }
