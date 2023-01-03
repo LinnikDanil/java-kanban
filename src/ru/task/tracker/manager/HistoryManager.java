@@ -2,6 +2,7 @@ package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -26,7 +27,7 @@ public interface HistoryManager {
      *
      * @return список из задач
      */
-    LinkedList<Task> getHistory();
+    ArrayList<Task> getHistory();
 }
 
 

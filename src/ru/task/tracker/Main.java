@@ -25,6 +25,7 @@ public class Main {
         System.out.println("Обновление Таска");
         taskManager.updateTask(new Task(taskId1, "Курс", "Сдать последний ТЗ", StatusesOfTask.NEW));
         System.out.println(taskManager.getAllTasks());
+        System.out.println(taskManager.historyManager.getHistory());
         System.out.println("Удалить таск по айди");
         taskManager.removeTaskById(taskId1);
         System.out.println(taskManager.getAllTasks());
@@ -38,6 +39,7 @@ public class Main {
         System.out.println(taskManager.getAllTasks());
 
         System.out.println("\n2 - Epics");
+        System.out.println(taskManager.historyManager.getHistory());
         System.out.println("Создали 1 эпик");
         int epicId1 = taskManager.createEpic(new Epic("Епик 1", "Проверка епика 1"));
         System.out.println("Просмотр эпика по айди");
@@ -100,24 +102,49 @@ public class Main {
         epicId1 = taskManager.createEpic(new Epic("Епик 1", "Проверка епика 1"));
         System.out.println(taskManager.getAllEpics());
         System.out.println(taskManager.getAllSubtask());
+        taskManager.clearAllEpics();
 
         System.out.println("\nПроверка истории");
         System.out.println(taskManager.historyManager.getHistory());
-        taskManager.clearAllTasks();
-        taskManager.clearAllEpics();
+        int epicTest1 = taskManager.createEpic(new Epic("Test 1", "Testing 1"));
+        int epicTest2 = taskManager.createEpic(new Epic("Test 2", "Testing 2"));
+        int subtaskTest1 = taskManager.createSubtask(new Subtask("subtask 1", "subtaskDescription 1", epicTest1));
+        int subtaskTest2 = taskManager.createSubtask(new Subtask("subtask 2", "subtaskDescription 2", epicTest1));
+        int subtaskTest3 = taskManager.createSubtask(new Subtask("subtask 3", "subtaskDescription 3", epicTest1));
+        System.out.println(taskManager.getAllEpics());
+        System.out.println(taskManager.getAllSubtask());
+
+        System.out.println(taskManager.getEpicById(epicTest1));
+        System.out.println(taskManager.getEpicById(epicTest2));
+        System.out.println(taskManager.getSubtaskById(subtaskTest1));
+        System.out.println(taskManager.getSubtaskById(subtaskTest2));
+        System.out.println(taskManager.getSubtaskById(subtaskTest3));
+
+        System.out.println("\nИстория после первого запроса");
         System.out.println(taskManager.historyManager.getHistory());
-//        taskId1 = taskManager.createTask(new Task("Таск1", "Таск1"));
-//        taskId2 = taskManager.createTask(new Task("Таск2", "Таск2"));
-//        taskManager.getTaskById(taskId1);
-//        taskManager.getTaskById(taskId2);
-//        System.out.println(taskManager.historyManager.getHistory());
-//        taskManager.getTaskById(taskId1);
-//        taskManager.getTaskById(taskId2);
-//        System.out.println(taskManager.historyManager.getHistory());
-//        taskManager.getTaskById(taskId1);
-//        taskManager.getTaskById(taskId2);
-//        System.out.println(taskManager.historyManager.getHistory());
-//        taskManager.getTaskById(taskId2);
-//        System.out.println(taskManager.historyManager.getHistory());
+
+        System.out.println("\nИстория при разных вызовах задач");
+        taskManager.getSubtaskById(subtaskTest1);
+        System.out.println(taskManager.historyManager.getHistory());
+        taskManager.getEpicById(epicTest2);
+        System.out.println(taskManager.historyManager.getHistory());
+        taskManager.getSubtaskById(subtaskTest3);
+        System.out.println(taskManager.historyManager.getHistory());
+        taskManager.getSubtaskById(subtaskTest2);
+        System.out.println(taskManager.historyManager.getHistory());
+        taskManager.getEpicById(epicTest1);
+        System.out.println(taskManager.historyManager.getHistory());
+
+        System.out.println("\nУдалили сабтаск2 из истории");
+        taskManager.historyManager.remove(new Subtask(subtaskTest2, "asd", "asd", StatusesOfTask.NEW, epicTest1));
+        System.out.println(taskManager.historyManager.getHistory());
+
+        System.out.println("История после удаления эпика с подзадачами");
+        taskManager.removeEpicById(epicTest1);
+        System.out.println(taskManager.historyManager.getHistory());
+
+        taskManager.clearAllEpics();
+        System.out.println("Удалили все эпики");
+        System.out.println(taskManager.historyManager.getHistory());
     }
 }
