@@ -146,5 +146,5 @@ import java.util.ArrayList;
      * @param epicId
      * @return список сабтасков
      */
-     ArrayList<Integer> getAllSubtaskByEpicId(int epicId);
+     ArrayList<Subtask> getAllSubtaskByEpicId(int epicId);
 }

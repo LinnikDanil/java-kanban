@@ -2,8 +2,7 @@ package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.Task;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Интерфейс для управления историей просмотров
@@ -20,14 +19,14 @@ public interface HistoryManager {
      * Метод удаляет задачу из истории
      * @param task
      */
-    void remove(Task task);
+    void remove(int id);
 
     /**
      * Метод получения истории из 10 последних задач
      *
      * @return список из задач
      */
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 }
 
 

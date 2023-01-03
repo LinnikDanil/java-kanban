@@ -74,6 +74,8 @@ public class Main {
         System.out.println("Обновление сабтаска");
         taskManager.updateSubtask(new Subtask(subtaskId1, "Сабтаск 3", "Проверка сабтаска 3", StatusesOfTask.NEW, epicId1));
         System.out.println(taskManager.getAllSubtask());
+        System.out.println("Проверка вывода всех сабтасков по айди эпика");
+        System.out.println(taskManager.getAllSubtaskByEpicId(epicId1));
         System.out.println("Удалить эпик по айди");
         taskManager.removeSubtaskById(subtaskId1);
         System.out.println(taskManager.getAllSubtask());
@@ -136,7 +138,7 @@ public class Main {
         System.out.println(taskManager.historyManager.getHistory());
 
         System.out.println("\nУдалили сабтаск2 из истории");
-        taskManager.historyManager.remove(new Subtask(subtaskTest2, "asd", "asd", StatusesOfTask.NEW, epicTest1));
+        taskManager.historyManager.remove(epicTest1);
         System.out.println(taskManager.historyManager.getHistory());
 
         System.out.println("История после удаления эпика с подзадачами");
