@@ -12,6 +12,7 @@ import java.util.List;
 public class InMemoryHistoryManager implements HistoryManager {
 
     private final CustomLinkedList historyTasks;
+    private final HashMap<Integer, CustomLinkedList.Node> nodes = new HashMap<>();
 
     public InMemoryHistoryManager() {
         this.historyTasks = new CustomLinkedList();
@@ -19,17 +20,17 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (historyTasks.nodes.containsKey(task.getId())){
-            historyTasks.removeNode(historyTasks.nodes.get(task.getId()));
+        if (nodes.containsKey(task.getId())){
+            historyTasks.removeNode(nodes.get(task.getId()));
         }
         historyTasks.linkLast(task);
     }
 
     @Override
     public void remove(int id) {
-        if (historyTasks.nodes.containsKey(id)){
-            historyTasks.removeNode(historyTasks.nodes.get(id));
-            historyTasks.nodes.remove(id);
+        if (nodes.containsKey(id)){
+            historyTasks.removeNode(nodes.get(id));
+            nodes.remove(id);
         }
     }
 
@@ -39,7 +40,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public class CustomLinkedList{
-        private final HashMap<Integer, Node> nodes = new HashMap<>();
         class Node {
             public Task data;
             public Node next;
