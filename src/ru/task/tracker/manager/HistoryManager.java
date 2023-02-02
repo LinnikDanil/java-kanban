@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface HistoryManager {
 
+
     /**
      * Метод помечает задачу как просмотренную
      * @param task
@@ -17,7 +18,6 @@ public interface HistoryManager {
 
     /**
      * Метод удаляет задачу из истории
-     * @param task
      */
     void remove(int id);
 

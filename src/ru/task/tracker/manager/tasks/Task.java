@@ -5,6 +5,7 @@ package ru.task.tracker.manager.tasks;
  * Также является родителем для подклассов {@link Subtask} и {@link Epic}
  */
 public class Task {
+    protected TypeOfTasks type;
     private String name; //название задачи
     private String description; //описание задачи
     private int id;
@@ -22,6 +23,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = StatusesOfTask.NEW;
+        type = TypeOfTasks.TASK;
     }
 
     /**
@@ -36,6 +38,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+        type = TypeOfTasks.TASK;
     }
 
     public void setId(int id) {
@@ -44,6 +47,10 @@ public class Task {
 
     public void setStatus(StatusesOfTask status) {
         this.status = status;
+    }
+
+    public TypeOfTasks getType() {
+        return type;
     }
 
     public int getId() {
@@ -64,11 +71,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status='" + status + '\'' +
-                '}';
+        return String.format("%d,%s,%s,%s,%s,",getId(), getType().toString(),getName(),
+                getStatus().toString(),getDescription());
     }
 }

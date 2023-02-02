@@ -18,6 +18,7 @@ public class Epic extends Task {
     public Epic(String name, String description) {
         super(name, description);
         subtasks = new ArrayList<>();
+        type = TypeOfTasks.EPIC;
     }
 
     /**
@@ -29,6 +30,20 @@ public class Epic extends Task {
     public Epic(int id, String name, String description) {
         super(id, name, description, StatusesOfTask.NEW);
         subtasks = new ArrayList<>();
+        type = TypeOfTasks.EPIC;
+    }
+
+    /**
+     * Конструктор - загрузка эпика из файла
+     * @param id
+     * @param name
+     * @param description
+     * @param statusesOfTask
+     */
+    public Epic(int id, String name, String description, StatusesOfTask statusesOfTask) {
+        super(id, name, description, statusesOfTask);
+        subtasks = new ArrayList<>();
+        type = TypeOfTasks.EPIC;
     }
 
     public void addSubtask(int SubtaskId) {
@@ -53,14 +68,4 @@ public class Epic extends Task {
         subtasks.clear();
     }
 
-    @Override
-    public String toString() {
-        return "Epic{" +
-                "name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", status='" + getStatus() + '\'' +
-                "subtasks=" + subtasks +
-                '}';
-    }
 }

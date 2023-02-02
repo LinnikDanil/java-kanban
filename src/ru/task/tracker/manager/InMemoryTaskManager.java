@@ -8,10 +8,10 @@ import java.util.HashMap;
  * Класс менеджера задач, имплементирующий интерфейс {@link TaskManager} со всей логикой работы, отвечающий за управление классами задач.
  */
 public class InMemoryTaskManager implements TaskManager{
-    private int id;
-    private final HashMap<Integer, Task> tasks;
-    private final HashMap<Integer, Epic> epics;
-    private final HashMap<Integer, Subtask> subtasks;
+    protected int id;
+    protected final HashMap<Integer, Task> tasks;
+    protected final HashMap<Integer, Epic> epics;
+    protected final HashMap<Integer, Subtask> subtasks;
 
     public HistoryManager historyManager = Managers.getDefaultHistory();
 
@@ -31,18 +31,36 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public ArrayList<Task> getAllTasks() {
         ArrayList<Task> tasksList = new ArrayList<>(tasks.values());
+
+        //добавление тасков в историю
+        for (Task task : tasksList){
+            historyManager.add(task);
+        }
+
         return tasksList;
     }
 
     @Override
     public ArrayList<Epic> getAllEpics() {
         ArrayList<Epic> epicsList = new ArrayList<>(epics.values());
+
+        //добавление эпиков в историю
+        for (Task epic : epicsList){
+            historyManager.add(epic);
+        }
+
         return epicsList;
     }
 
     @Override
     public ArrayList<Subtask> getAllSubtask() {
         ArrayList<Subtask> subtaskList = new ArrayList<>(subtasks.values());
+
+        //добавление сабтасков в историю
+        for (Task subtask : subtaskList){
+            historyManager.add(subtask);
+        }
+
         return subtaskList;
     }
 
@@ -188,6 +206,7 @@ public class InMemoryTaskManager implements TaskManager{
         if (epics.containsKey(epicId)) {
             for (int i : epics.get(epicId).getSubtasks()) {
                 subtasksInEpic.add(subtasks.get(i));
+                historyManager.add(subtasks.get(i));
             }
         }
         return subtasksInEpic;

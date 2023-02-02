@@ -11,16 +11,61 @@ import java.util.List;
  */
 public class InMemoryHistoryManager implements HistoryManager {
 
+    /**
+     * Список для хранения истории задач
+     */
     private final CustomLinkedList historyTasks;
+    /**
+     * Хранение узлов кастомного списка
+     */
     private final HashMap<Integer, CustomLinkedList.Node> nodes = new HashMap<>();
 
+    /**
+     * Конструктор - создание класса
+     */
     public InMemoryHistoryManager() {
         this.historyTasks = new CustomLinkedList();
     }
 
+    /**
+     * Преобразование истории в строку из айди
+     * @param manager
+     * @return
+     */
+    public static String historyToString(HistoryManager manager) {
+        StringBuilder stringBuilder = new StringBuilder();
+        int countHistory = 0;
+
+        for (Task task : manager.getHistory()) {
+            countHistory++;
+            if (countHistory >= manager.getHistory().size()) {
+                stringBuilder.append(String.format("%d", task.getId()));
+            } else {
+                stringBuilder.append(task.getId() + ",");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Преобразование строки в список айди тасков из истории
+     * @param value
+     * @return
+     */
+    static List<Integer> historyFromString(String value) {
+        List<Integer> history = new ArrayList<>();
+        if (!value.isBlank()) {
+            String[] splitHistory = value.split(",");
+            for (String s : splitHistory) {
+                history.add(Integer.parseInt(s));
+            }
+        }
+        return history;
+    }
+
     @Override
     public void add(Task task) {
-        if (nodes.containsKey(task.getId())){
+        if (nodes.containsKey(task.getId())) {
             historyTasks.removeNode(nodes.get(task.getId()));
         }
         historyTasks.linkLast(task);
@@ -28,7 +73,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        if (nodes.containsKey(id)){
+        if (nodes.containsKey(id)) {
             historyTasks.removeNode(nodes.get(id));
             nodes.remove(id);
         }
@@ -39,13 +84,25 @@ public class InMemoryHistoryManager implements HistoryManager {
         return historyTasks.getTasks();
     }
 
-    public class CustomLinkedList{
+    /**
+     * Класс создания кастомного двусвязного листа
+     */
+    public class CustomLinkedList {
+        /**
+         * Вспомогательный класс для создания узлов списка
+         */
         class Node {
             public Task data;
             public Node next;
             public Node prev;
 
-            public Node(Node prev, Task data, Node next){
+            /**
+             * Конструктор вспомогательного класса
+             * @param prev
+             * @param data
+             * @param next
+             */
+            public Node(Node prev, Task data, Node next) {
                 this.data = data;
                 this.next = next;
                 this.prev = prev;
@@ -64,21 +121,28 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         private int size = 0;
 
-        private void linkLast(Task task){
+        /**
+         * Положить файл в конец списка
+         * @param task
+         */
+        private void linkLast(Task task) {
             final Node oldTail = tail;
             final Node newNode = new Node(oldTail, task, null);
             tail = newNode;
-            if (oldTail == null){
+            if (oldTail == null) {
                 head = newNode;
-            }
-            else{
+            } else {
                 oldTail.next = newNode;
             }
             size++;
             nodes.put(task.getId(), tail);
         }
 
-        private void removeNode(Node x){
+        /**
+         * Удалить узел из списка
+         * @param x
+         */
+        private void removeNode(Node x) {
             final Node next = x.next;
             final Node prev = x.prev;
 
@@ -99,9 +163,14 @@ public class InMemoryHistoryManager implements HistoryManager {
             x.data = null;
             size--;
         }
-        public ArrayList<Task> getTasks(){
+
+        /**
+         * Получить все таски из списка
+         * @return
+         */
+        public ArrayList<Task> getTasks() {
             ArrayList<Task> tasksInHistory = new ArrayList<>();
-            for (Node node = tail; node != null; node = node.prev){
+            for (Node node = tail; node != null; node = node.prev) {
                 tasksInHistory.add(node.data);
             }
             return tasksInHistory;
