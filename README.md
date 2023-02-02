@@ -52,3 +52,5 @@
 8. **ru.task.tracker.inMemoryTaskManager.tasks.Epic** - Класс, отвечающий за создание епиков (задач с подзадачами). Является дочерним классом ru.task.tracker.inMemoryTaskManager.tasks.Task.
 9. **ru.task.tracker.inMemoryTaskManager.tasks.Subtask** - Класс, отвечающий за создание подзадач для класса ru.task.tracker.inMemoryTaskManager.tasks.Epic. Является дочерним классом ru.task.tracker.inMemoryTaskManager.tasks.Task.
 10. **ru.task.tracker.inMemoryTaskManager.tasks.StatusesOfTask** - Перечесление возможных статусов задачи.
+11. **ru.task.tracker.manager.FileBackedTasksManager** -  Класс менеджера задач, имплементирующий класс ImMemoryTaskManagerager, в котором можно работать с файлами
+
