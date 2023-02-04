@@ -5,6 +5,7 @@ import ru.task.tracker.manager.tasks.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.Map;
  */
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File data_tasks; // файл с данными о тасках
-    private Map<Integer, Task> allTasks; //Все таски, эпики и сабтаски для восставновления истории
 
     /**
      * Конструктор создания класса
@@ -25,24 +25,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public FileBackedTasksManager(File file) {
         super();
         data_tasks = file;
-        allTasks = new HashMap<>();
     }
 
     public static void main(String[] args) {
-        FileBackedTasksManager fbTaskManager = FileBackedTasksManager.loadFromFile(
-                new File("resources/data_tasks.csv"));
+        FileBackedTasksManager fbTaskManager = new FileBackedTasksManager(new File("resources/data_tasks.csv"));
 
         System.out.println("Test FileBackedTasksManager\n");
-
-        System.out.println(fbTaskManager.historyManager.getHistory());
-        System.out.println(fbTaskManager.getAllTasks());
-        System.out.println(fbTaskManager.getAllEpics());
-        System.out.println(fbTaskManager.getAllSubtask());
-        System.out.println(fbTaskManager.historyManager.getHistory());
-
-        fbTaskManager.clearAllTasks();
-        fbTaskManager.clearAllEpics();
-
         int fbTask1 = fbTaskManager.createTask(new Task("task 1", "test Task 1"));
         int fbTask2 = fbTaskManager.createTask(new Task("task 2", "test Task 2"));
         int fbEpic1 = fbTaskManager.createEpic(new Epic("Epic 1", "test Epic 1"));
@@ -51,18 +39,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         int fbSubtask2 = fbTaskManager.createSubtask(new Subtask("Subtask 2", "test subtask 2", fbEpic1));
         int fbSubtask3 = fbTaskManager.createSubtask(new Subtask("Subtask 3", "test subtask 3", fbEpic2));
 
-        System.out.println(fbTaskManager.getEpicById(fbEpic1));
-        System.out.println(fbTaskManager.getSubtaskById(fbSubtask1));
-        System.out.println(fbTaskManager.getTaskById(fbTask1));
-
-//        System.out.println(fbTaskManager.getAllTasks());
-//        System.out.println(fbTaskManager.getAllEpics());
-//        System.out.println(fbTaskManager.getAllSubtask());
-
-//
+        System.out.println(fbTaskManager.getAllTasks());
+        System.out.println(fbTaskManager.getAllEpics());
+        System.out.println(fbTaskManager.getAllSubtask());
         System.out.println(fbTaskManager.historyManager.getHistory());
-//        System.out.println(fbTaskManager.getTaskById(fbTask2));
-//        System.out.println(fbTaskManager.historyManager.getHistory());
+
+
+        FileBackedTasksManager fbTaskManager2 = FileBackedTasksManager.loadFromFile(
+                new File("resources/data_tasks.csv"));
+
+        System.out.println("\n\n Проверяем загрузку информации с файла... ");
+        System.out.println(fbTaskManager2.historyManager.getHistory());
+        System.out.println(fbTaskManager2.getAllTasks());
+        System.out.println(fbTaskManager2.getAllEpics());
+        System.out.println(fbTaskManager2.getAllSubtask());
+        int fbTask3 = fbTaskManager2.createTask(new Task("task 3", "Должен быть id = 8"));
+        System.out.println(fbTaskManager2.getTaskById(fbTask3));
+        System.out.println(fbTaskManager2.historyManager.getHistory());
     }
 
     /**
@@ -73,32 +66,44 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      */
     public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-            List<String> bufferedStrings = new ArrayList<>();
+        if (file.exists()) {
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+                List<String> bufferedStrings = new ArrayList<>();
+                Map<Integer, Task> allTasks = new HashMap<>();
 
-            while (bufferedReader.ready()) {
-                bufferedStrings.add(bufferedReader.readLine());
-            }
-
-            if (!bufferedStrings.isEmpty()) {
-                for (int i = 1; i < bufferedStrings.size() - 2; i++) {//Работа с тасками
-                    fileBackedTasksManager.fromString(bufferedStrings.get(i));
+                while (bufferedReader.ready()) {
+                    bufferedStrings.add(bufferedReader.readLine());
                 }
 
-                List<Integer> history = InMemoryHistoryManager.historyFromString(//Работа с историей
-                        bufferedStrings.get(bufferedStrings.size() - 1));
-                fileBackedTasksManager.fillAllTasks();
-                for (int element : history) {
-                    if (fileBackedTasksManager.allTasks.containsKey(element)) {
-                        fileBackedTasksManager.historyManager.add(fileBackedTasksManager.allTasks.get(element));
+                if (!bufferedStrings.isEmpty()) {
+                    for (int i = 1; i < bufferedStrings.size() - 2; i++) {//Работа с тасками
+                        Task task = fileBackedTasksManager.fromString(bufferedStrings.get(i));
+                        allTasks.put(task.getId(), task);
                     }
-                }
-            }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                    List<Integer> history = InMemoryHistoryManager.historyFromString(//Работа с историей
+                            bufferedStrings.get(bufferedStrings.size() - 1));
+
+                    for (int element : history) {
+                        if (allTasks.containsKey(element)) {
+                            fileBackedTasksManager.historyManager.add(allTasks.get(element));
+                        }
+                    }
+
+                    int maxId = 0;
+                    for (int id : allTasks.keySet()){
+                        if (id > maxId){
+                            maxId = id;
+                        }
+                    }
+                    fileBackedTasksManager.setId(maxId);
+                }
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return fileBackedTasksManager;
     }
@@ -110,13 +115,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(data_tasks, StandardCharsets.UTF_8, false))) {
             bufferedWriter.write("id,type,name,status,description,epic\n");
             for (Task task : tasks.values()) {
-                bufferedWriter.write(task.toString() + "\n");
+                bufferedWriter.write(task.toCsv() + "\n");
             }
             for (Epic epic : epics.values()) {
-                bufferedWriter.write(epic.toString() + "\n");
+                bufferedWriter.write(epic.toCsv() + "\n");
                 if (!epic.getSubtasks().isEmpty()) {
                     for (int subId : epic.getSubtasks()) {
-                        bufferedWriter.write(subtasks.get(subId).toString() + "\n");
+                        bufferedWriter.write(subtasks.get(subId).toCsv() + "\n");
                     }
                 }
             }
@@ -168,18 +173,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
         }
         throw new RuntimeException("Ошибка!");
-    }
-
-    /**
-     * объединяет все таски в один список
-     *
-     * @return список всех тасков
-     */
-    public Map<Integer, Task> fillAllTasks() {
-        allTasks.putAll(tasks);
-        allTasks.putAll(epics);
-        allTasks.putAll(subtasks);
-        return allTasks;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ru.task.tracker.manager;
 
+import java.io.File;
+
 /**
  * Утилитарный класс, создающий менеджеры
  */
@@ -10,7 +12,7 @@ public class Managers {
      * @return объект класса TaskManager
      */
     public static TaskManager getDefault(){
-        return new InMemoryTaskManager();
+        return new FileBackedTasksManager(new File("resources/data_tasks.csv"));
     }
 
     /**

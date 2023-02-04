@@ -39,8 +39,17 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s,%d",getId(), getType().toString(),getName(), getStatus().toString(),getDescription(), getEpicId());
+        return "Subtask{" +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", id=" + getId() +
+                ", status='" + getStatus() + '\'' +
+                '}';
+
     }
 
-
+    @Override
+    public String toCsv() {
+        return String.format("%d,%s,%s,%s,%s,%d",getId(), getType().toString(),getName(), getStatus().toString(),getDescription(), getEpicId());
+    }
 }

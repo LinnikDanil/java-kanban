@@ -8,6 +8,7 @@ import java.util.HashMap;
  * Класс менеджера задач, имплементирующий интерфейс {@link TaskManager} со всей логикой работы, отвечающий за управление классами задач.
  */
 public class InMemoryTaskManager implements TaskManager{
+
     protected int id;
     protected final HashMap<Integer, Task> tasks;
     protected final HashMap<Integer, Epic> epics;
@@ -210,6 +211,10 @@ public class InMemoryTaskManager implements TaskManager{
             }
         }
         return subtasksInEpic;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

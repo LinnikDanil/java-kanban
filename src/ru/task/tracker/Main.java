@@ -10,12 +10,12 @@ import java.nio.file.Path;
  * Основной класс приложения
  *
  * @author Линник Данил
- * @version 1.0
+ * @version 1.5
  */
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        FileBackedTasksManager taskManager = (FileBackedTasksManager) Managers.getDefault();
 
         System.out.println("\n1 - Tasks");
         System.out.println("Создали 1 таск");
@@ -140,16 +140,5 @@ public class Main {
         taskManager.getEpicById(epicTest1);
         System.out.println(taskManager.historyManager.getHistory());
 
-        System.out.println("\nУдалили сабтаск2 из истории");
-        taskManager.historyManager.remove(epicTest1);
-        System.out.println(taskManager.historyManager.getHistory());
-
-        System.out.println("История после удаления эпика с подзадачами");
-        taskManager.removeEpicById(epicTest1);
-        System.out.println(taskManager.historyManager.getHistory());
-
-        taskManager.clearAllEpics();
-        System.out.println("Удалили все эпики");
-        System.out.println(taskManager.historyManager.getHistory());
     }
 }
