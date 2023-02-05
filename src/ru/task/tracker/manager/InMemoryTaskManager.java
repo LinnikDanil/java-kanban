@@ -14,9 +14,6 @@ public class InMemoryTaskManager implements TaskManager{
     protected final HashMap<Integer, Epic> epics;
     protected final HashMap<Integer, Subtask> subtasks;
 
-    public HistoryManager historyManager = Managers.getDefaultHistory();
-
-
     /**
      * Конструктор - создание нового объекта
      *
@@ -211,10 +208,6 @@ public class InMemoryTaskManager implements TaskManager{
             }
         }
         return subtasksInEpic;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     /**

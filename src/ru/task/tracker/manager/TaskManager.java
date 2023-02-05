@@ -1,7 +1,6 @@
 package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.Epic;
-import ru.task.tracker.manager.tasks.StatusesOfTask;
 import ru.task.tracker.manager.tasks.Subtask;
 import ru.task.tracker.manager.tasks.Task;
 import java.util.ArrayList;
@@ -9,8 +8,9 @@ import java.util.ArrayList;
 /**
  * Интерфейс менеджера задач со всей логикой работы, отвечающий за управление классами задач.
  */
- interface TaskManager {
+ public interface TaskManager {
 
+    HistoryManager historyManager = Managers.getDefaultHistory();;
     /**
      * Метод получения списка всех задач
      *

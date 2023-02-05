@@ -96,7 +96,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                             maxId = id;
                         }
                     }
-                    fileBackedTasksManager.setId(maxId);
+                    fileBackedTasksManager.id = maxId;
                 }
 
             } catch (FileNotFoundException e) {

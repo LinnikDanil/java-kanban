@@ -15,8 +15,8 @@ import java.nio.file.Path;
 public class Main {
 
     public static void main(String[] args) {
-        FileBackedTasksManager taskManager = (FileBackedTasksManager) Managers.getDefault();
-
+        TaskManager taskManager = Managers.getDefault();
+        
         System.out.println("\n1 - Tasks");
         System.out.println("Создали 1 таск");
         int taskId1 = taskManager.createTask(new Task("Уборка", "Сделать домашнюю уборку"));
