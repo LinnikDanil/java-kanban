@@ -5,6 +5,8 @@ import ru.task.tracker.manager.tasks.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,7 +114,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      */
     private void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(data_tasks, StandardCharsets.UTF_8, false))) {
-            bufferedWriter.write("id,type,name,status,description,epic\n");
+            bufferedWriter.write("id,type,name,status,description,startTime,duration,epic\n");
             for (Task task : tasks.values()) {
                 bufferedWriter.write(task.toCsv() + "\n");
             }
@@ -146,21 +148,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             String name = splitValue[2];
             StatusesOfTask status = StatusesOfTask.valueOf(splitValue[3]);
             String description = splitValue[4];
+            LocalDateTime startTime = LocalDateTime.parse(splitValue[5]);
+            Duration duration = Duration.parse(splitValue[6]);
+
 
             switch (type) {
                 case TASK:
-                    Task task = new Task(id, name, description, status);
+                    Task task = new Task(id, name, description, status, startTime, duration);
                     tasks.put(id, task);
                     return task;
 
                 case EPIC:
-                    Epic epic = new Epic(id, name, description, status);
+                    Epic epic = new Epic(id, name, description, status, startTime, duration);
                     epics.put(id, epic);
                     return epic;
 
                 case SUBTASK:
-                    int epicId = Integer.parseInt(splitValue[5]);
-                    Subtask subtask = new Subtask(id, name, description, status, epicId);
+                    int epicId = Integer.parseInt(splitValue[7]);
+                    Subtask subtask = new Subtask(id, name, description, status, epicId, startTime, duration);
                     subtasks.put(id, subtask);
                     if (epics.containsKey(epicId)) {
                         epics.get(epicId).addSubtask(id);

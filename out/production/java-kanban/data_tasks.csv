@@ -1,8 +1,11 @@
-id,type,name,status,description,epic
-16,EPIC,Test 2,NEW,Testing 2,
-15,EPIC,Test 1,NEW,Testing 1,
-17,SUBTASK,subtask 1,NEW,subtaskDescription 1,15
-18,SUBTASK,subtask 2,NEW,subtaskDescription 2,15
-19,SUBTASK,subtask 3,NEW,subtaskDescription 3,15
+id,type,name,status,description,startTime,duration,epic
+1,TASK,task 1,NEW,test Task 1,1970-01-01T00:00,PT0S
+2,TASK,task 2,NEW,test Task 2,1970-01-01T00:00,PT0S
+8,TASK,task 3,NEW,Должен быть id = 8,1970-01-01T00:00,PT0S
+3,EPIC,Epic 1,NEW,test Epic 1,1970-01-01T00:00,PT0S
+5,SUBTASK,Subtask 1,NEW,test subtask 1,1970-01-01T00:00,PT0S,3
+6,SUBTASK,Subtask 2,NEW,test subtask 2,1970-01-01T00:00,PT0S,3
+4,EPIC,Epic 2,NEW,test Epic 2,1970-01-01T00:00,PT0S
+7,SUBTASK,Subtask 3,NEW,test subtask 3,1970-01-01T00:00,PT0S,4
 
-15,18,19,16,17
+8,7,6,5,4,3,2,1

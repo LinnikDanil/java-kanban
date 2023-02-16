@@ -46,8 +46,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     void putSubtasksInSubtaskManager() {
-        subtask1.setEpicId(epic1.getId());
-        subtask2.setEpicId(epic1.getId());
+        int epic1Id = testTaskManager.createEpic(epic1);
+        subtask1.setEpicId(epic1Id);
+        subtask2.setEpicId(epic1Id);
         testTaskManager.createSubtask(subtask1);
         testTaskManager.createSubtask(subtask2);
     }
@@ -84,7 +85,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
     //getAllSubtask
     @Test
     void testMethodGetAllSubtasks() {
-        putEpicsInEpicManager();
         putSubtasksInSubtaskManager();
         List<Subtask> listOfSubtasks = List.of(subtask1, subtask2);
         assertArrayEquals(listOfSubtasks.toArray(), testTaskManager.getAllSubtasks().toArray());
@@ -131,7 +131,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
     //clearAllTSubtasks();
     @Test
     void testMethodClearAllSubtasks() {
-        putEpicsInEpicManager();
         putSubtasksInSubtaskManager();
         testTaskManager.clearAllSubtasks();
         List<Subtask> listOfSubtasks = Collections.emptyList();
@@ -140,7 +139,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void testMethodClearAllSubtasksWithClearAllEpics() {
-        putEpicsInEpicManager();
         putSubtasksInSubtaskManager();
         testTaskManager.clearAllEpics();
         List<Subtask> listOfSubtasks = Collections.emptyList();
@@ -311,8 +309,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void testMethodGetAllSubtaskByEpicId() {
         int epicId = testTaskManager.createEpic(epic1);
-        Subtask subtaskTest1 = new Subtask("TestSubtask1", "Test1", epicId);
-        Subtask subtaskTest2 = new Subtask("TestSubtask2", "Test2", epicId);
+        Subtask subtaskTest1 = new Subtask("TestSubtask1", "Test 1", epicId);
+        Subtask subtaskTest2 = new Subtask("TestSubtask2", "Test 2", epicId);
         int subtaskId1 = testTaskManager.createSubtask(subtaskTest1);
         int subtaskId2 = testTaskManager.createSubtask(subtaskTest2);
         List<Subtask> listOfSubtasks = List.of(subtaskTest1, subtaskTest2);

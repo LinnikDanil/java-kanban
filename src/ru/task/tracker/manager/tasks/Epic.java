@@ -1,5 +1,7 @@
 package ru.task.tracker.manager.tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,7 @@ import java.util.ArrayList;
  * Является дочерним классом {@link Task}
  */
 public class Epic extends Task {
-
+    private LocalDateTime endTime;
     private final ArrayList<Integer> subtasks;
 
     /**
@@ -45,6 +47,12 @@ public class Epic extends Task {
         subtasks = new ArrayList<>();
         type = TypeOfTasks.EPIC;
     }
+    public Epic(int id, String name, String description,
+                StatusesOfTask statusesOfTask, LocalDateTime startTime, Duration duration) {
+        super(id, name, description, statusesOfTask, startTime, duration);
+        subtasks = new ArrayList<>();
+        type = TypeOfTasks.EPIC;
+    }
 
     public void addSubtask(int SubtaskId) {
         subtasks.add(SubtaskId);
@@ -68,6 +76,15 @@ public class Epic extends Task {
         subtasks.clear();
     }
 
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
     @Override
     public String toString() {
         return "Epic{" +
@@ -75,6 +92,8 @@ public class Epic extends Task {
                 ", description='" + getDescription() + '\'' +
                 ", id=" + getId() +
                 ", status='" + getStatus() + '\'' +
+                ", startTime='" + getStartTime().toString() + '\'' +
+                ", duration='" + getDuration().toString() + '\'' +
                 "subtasks=" + subtasks +
                 '}';
     }

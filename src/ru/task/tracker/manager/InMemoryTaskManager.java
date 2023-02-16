@@ -2,6 +2,8 @@ package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +90,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearAllSubtasks() {
         for (Epic ep : epics.values()) {
             ep.clearSubtasks();
-            updateStatusEpic(ep.getId()); //Установка статуса - new
+            updateStatusEpic(ep.getId());//Установка статуса - new
+            updateLocalDateTimeForEpic(ep.getId());
         }
         for (Task task : subtasks.values()) {
             historyManager.remove(task.getId());
@@ -143,6 +146,7 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.put(subtask.getId(), subtask);
         }
         updateStatusEpic(subtask.getEpicId());
+        updateLocalDateTimeForEpic(subtask.getEpicId());
         return subtask.getId();
     }
 
@@ -161,6 +165,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(epic.getId());
             epics.put(epic.getId(), epic);
             updateStatusEpic(epic.getId());
+            updateLocalDateTimeForEpic(epic.getId());
         } else throw new IllegalArgumentException("Обновление эпика невозможно. Id неверный");
     }
 
@@ -171,6 +176,7 @@ public class InMemoryTaskManager implements TaskManager {
                 historyManager.remove(subtask.getId());
                 subtasks.put(subtask.getId(), subtask);
                 updateStatusEpic(subtask.getEpicId());
+                updateLocalDateTimeForEpic(subtask.getEpicId());
             } else throw new IllegalArgumentException("Обновление эпика невозможно. Id неверный");
         } else throw new IllegalArgumentException("Обновление cабтаска невозможно. Id неверный");
     }
@@ -202,6 +208,7 @@ public class InMemoryTaskManager implements TaskManager {
                 epics.get(epicId).removeSubtask(subtaskId); //удаление айди из списка в эпике
             }
             updateStatusEpic(epicId);
+            updateLocalDateTimeForEpic(epicId);
         }
         historyManager.remove(subtaskId);
         subtasks.remove(subtaskId);
@@ -252,6 +259,35 @@ public class InMemoryTaskManager implements TaskManager {
             return StatusesOfTask.IN_PROGRESS;
         }
         return null;
+    }
+
+    private void updateLocalDateTimeForEpic(int epicId) {
+        Duration sumDuration = Duration.ZERO;
+        LocalDateTime startTime = LocalDateTime.MAX;
+        LocalDateTime endTime = LocalDateTime.MIN;
+        Epic tempEpic = epics.get(epicId);
+        if (!tempEpic.getSubtasks().isEmpty()) {
+            for (int idSubtask : tempEpic.getSubtasks()) {
+                Subtask tempSubtask = subtasks.get(idSubtask);
+                //StartTime
+                if(tempSubtask.getStartTime() != null && tempSubtask.getStartTime().isBefore(startTime)) {
+                    startTime = tempSubtask.getStartTime();
+                }
+                //EndTime
+                if(tempSubtask.getEndTime() != null & tempSubtask.getEndTime().isAfter(endTime)) {
+                    endTime = tempSubtask.getEndTime();
+                }
+                //Duration
+                sumDuration = sumDuration.plus(tempSubtask.getDuration());
+            }
+            tempEpic.setDuration(sumDuration);
+            tempEpic.setStartTime(startTime);
+            tempEpic.setEndTime(endTime);
+        }
+        else {
+            tempEpic.setDuration(Duration.ZERO);
+            tempEpic.setStartTime(null);
+        }
     }
 
     /**

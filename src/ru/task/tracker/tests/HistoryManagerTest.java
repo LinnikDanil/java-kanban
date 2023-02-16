@@ -42,7 +42,7 @@ class HistoryManagerTest {
         LinkedList<Task> listOfTasks = new LinkedList<>();
         listOfTasks.add(epic);
         listOfTasks.add(task);
-        assertArrayEquals(historyManager.getHistory().toArray(), listOfTasks.toArray());
+        assertArrayEquals(historyManager.getHistory().toArray(), listOfTasks.toArray(), "История не пустая");
     }
 
     @Test
