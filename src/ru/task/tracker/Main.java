@@ -3,9 +3,6 @@ package ru.task.tracker;
 import ru.task.tracker.manager.*;
 import ru.task.tracker.manager.tasks.*;
 
-import java.io.File;
-import java.nio.file.Path;
-
 /**
  * Основной класс приложения
  *
@@ -16,7 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        
         System.out.println("\n1 - Tasks");
         System.out.println("Создали 1 таск");
         int taskId1 = taskManager.createTask(new Task("Уборка", "Сделать домашнюю уборку"));
@@ -53,7 +49,7 @@ public class Main {
         System.out.println("Обновление эпика");
         int subtaskId0 = taskManager.createSubtask(new Subtask(0, "1", "1", StatusesOfTask.IN_PROGRESS, epicId1));
         System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         taskManager.updateEpic(new Epic(epicId1, "Епик 3", "Проверка эпика 3"));
         System.out.println(taskManager.getAllEpics());
         System.out.println("Удалить эпик по айди");
@@ -73,40 +69,40 @@ public class Main {
         System.out.println(taskManager.getSubtaskById(subtaskId1));
         int subtaskId2 = taskManager.createSubtask(new Subtask("Сабтаск 2", "Проверка сабтаска 2", epicId1));
         System.out.println("Создали 2 сабтаска");
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         System.out.println("Обновление сабтаска");
         taskManager.updateSubtask(new Subtask(subtaskId1, "Сабтаск 3", "Проверка сабтаска 3", StatusesOfTask.NEW, epicId1));
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         System.out.println("Проверка вывода всех сабтасков по айди эпика");
         System.out.println(taskManager.getAllSubtaskByEpicId(epicId1));
         System.out.println("Удалить эпик по айди");
         taskManager.removeSubtaskById(subtaskId1);
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         int subtaskId3 = taskManager.createSubtask(new Subtask("Сабтаск 4", "Проверка сабтаска 4", epicId1));
         System.out.println("Проверка обновления статусов епиков");
         taskManager.updateSubtask(new Subtask(subtaskId2, "Сабтаск 5", "Проверка сабтаска 5", StatusesOfTask.IN_PROGRESS, epicId1));
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         System.out.println(taskManager.getAllEpics());
         taskManager.updateSubtask(new Subtask(subtaskId3, "Сабтаск 4", "Проверка сабтаска 4", StatusesOfTask.DONE, epicId1));
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         System.out.println(taskManager.getAllEpics());
         taskManager.updateSubtask(new Subtask(subtaskId2, "Сабтаск 5", "Проверка сабтаска 5", StatusesOfTask.DONE, epicId1));
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         System.out.println(taskManager.getAllEpics());
         System.out.println("Удалить все сабтаски");
         taskManager.clearAllSubtasks();
         System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
 
         System.out.println("\nПроверка на удаление сабтасков при удалении епиков");
         subtaskId2 = taskManager.createSubtask(new Subtask("Сабтаск 2", "Проверка сабтаска 2", epicId1));
         subtaskId3 = taskManager.createSubtask(new Subtask("Сабтаск 4", "Проверка сабтаска 4", epicId1));
         taskManager.clearAllEpics();
         System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         epicId1 = taskManager.createEpic(new Epic("Епик 1", "Проверка епика 1"));
         System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
         taskManager.clearAllEpics();
 
         System.out.println("\nПроверка истории");
@@ -117,7 +113,7 @@ public class Main {
         int subtaskTest2 = taskManager.createSubtask(new Subtask("subtask 2", "subtaskDescription 2", epicTest1));
         int subtaskTest3 = taskManager.createSubtask(new Subtask("subtask 3", "subtaskDescription 3", epicTest1));
         System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtask());
+        System.out.println(taskManager.getAllSubtasks());
 
         System.out.println(taskManager.getEpicById(epicTest1));
         System.out.println(taskManager.getEpicById(epicTest2));

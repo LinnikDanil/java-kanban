@@ -1,13 +1,15 @@
 package ru.task.tracker.manager;
 
 import ru.task.tracker.manager.tasks.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Класс менеджера задач, имплементирующий интерфейс {@link TaskManager} со всей логикой работы, отвечающий за управление классами задач.
  */
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
 
     protected int id;
     protected final HashMap<Integer, Task> tasks;
@@ -31,7 +33,7 @@ public class InMemoryTaskManager implements TaskManager{
         ArrayList<Task> tasksList = new ArrayList<>(tasks.values());
 
         //добавление тасков в историю
-        for (Task task : tasksList){
+        for (Task task : tasksList) {
             historyManager.add(task);
         }
 
@@ -43,7 +45,7 @@ public class InMemoryTaskManager implements TaskManager{
         ArrayList<Epic> epicsList = new ArrayList<>(epics.values());
 
         //добавление эпиков в историю
-        for (Task epic : epicsList){
+        for (Task epic : epicsList) {
             historyManager.add(epic);
         }
 
@@ -51,11 +53,11 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubtask() {
+    public ArrayList<Subtask> getAllSubtasks() {
         ArrayList<Subtask> subtaskList = new ArrayList<>(subtasks.values());
 
         //добавление сабтасков в историю
-        for (Task subtask : subtaskList){
+        for (Task subtask : subtaskList) {
             historyManager.add(subtask);
         }
 
@@ -96,20 +98,27 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public Task getTaskById(int taskId) {
-        historyManager.add(tasks.get(taskId));
-        return tasks.get(taskId);
+        if (tasks.containsKey(taskId)) {
+            historyManager.add(tasks.get(taskId));
+            return tasks.get(taskId);
+        } else throw new NullPointerException("Отсутствует таск по заданному id");
     }
 
     @Override
     public Epic getEpicById(int epicId) {
-        historyManager.add(epics.get(epicId));
-        return epics.get(epicId);
+        if (epics.containsKey(epicId)) {
+            historyManager.add(epics.get(epicId));
+            return epics.get(epicId);
+        } else throw new NullPointerException("Отсутствует эпик по заданному id");
     }
 
     @Override
     public Subtask getSubtaskById(int subtaskId) {
-        historyManager.add(subtasks.get(subtaskId));
-        return subtasks.get(subtaskId);
+        if (subtasks.containsKey(subtaskId)) {
+            historyManager.add(subtasks.get(subtaskId));
+            return subtasks.get(subtaskId);
+        } else throw new NullPointerException("Отсутствует сабтаск по заданному id");
+
     }
 
     @Override
@@ -139,31 +148,31 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public void updateTask(Task task) {
-        if (tasks.containsKey(task.getId())){
+        if (tasks.containsKey(task.getId())) {
             historyManager.remove(task.getId());
             tasks.put(task.getId(), task);
-        }
+        } else throw new IllegalArgumentException("Обновление таска невозможно. Id неверный");
     }
 
     @Override
     public void updateEpic(Epic epic) {
-        if (epics.containsKey(epic.getId())){
+        if (epics.containsKey(epic.getId())) {
             epic.setSubtasks(epics.get(epic.getId()).getSubtasks()); //Пермещение сабтасков со старого эпика в новый
             historyManager.remove(epic.getId());
             epics.put(epic.getId(), epic);
-        }
-        updateStatusEpic(epic.getId());
+            updateStatusEpic(epic.getId());
+        } else throw new IllegalArgumentException("Обновление эпика невозможно. Id неверный");
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
-        if (subtasks.containsKey(subtask.getId())){
+        if (subtasks.containsKey(subtask.getId())) {
             if (epics.containsKey(subtask.getEpicId())) {
                 historyManager.remove(subtask.getId());
                 subtasks.put(subtask.getId(), subtask);
                 updateStatusEpic(subtask.getEpicId());
-            }
-        }
+            } else throw new IllegalArgumentException("Обновление эпика невозможно. Id неверный");
+        } else throw new IllegalArgumentException("Обновление cабтаска невозможно. Id неверный");
     }
 
     @Override
@@ -206,8 +215,9 @@ public class InMemoryTaskManager implements TaskManager{
                 subtasksInEpic.add(subtasks.get(i));
                 historyManager.add(subtasks.get(i));
             }
-        }
-        return subtasksInEpic;
+            return subtasksInEpic;
+        } else throw new IllegalArgumentException("Отсутсвует id эпика");
+
     }
 
     /**

@@ -1,5 +1,7 @@
 package ru.task.tracker.manager.tasks;
 
+import java.util.Objects;
+
 /**
  * Класс, отвечающий за создание задач.
  * Также является родителем для подклассов {@link Subtask} и {@link Epic}
@@ -67,6 +69,18 @@ public class Task {
 
     public StatusesOfTask getStatus() {
         return status;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(obj == null && this.getClass() != obj.getClass()) return false;
+        Task otherTask = (Task) obj;
+        return Objects.equals(id, otherTask.id) &&
+                Objects.equals(name, otherTask.name) &&
+                Objects.equals(description, otherTask.description) &&
+                Objects.equals(status, otherTask.status) &&
+                Objects.equals(type, otherTask.type);
     }
 
     @Override

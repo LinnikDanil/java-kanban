@@ -92,9 +92,9 @@ public class InMemoryHistoryManager implements HistoryManager {
          * Вспомогательный класс для создания узлов списка
          */
         class Node {
-            public Task data;
-            public Node next;
-            public Node prev;
+            private Task data;
+            private Node next;
+            private Node prev;
 
             /**
              * Конструктор вспомогательного класса

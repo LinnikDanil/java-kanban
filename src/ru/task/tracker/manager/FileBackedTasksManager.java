@@ -5,7 +5,6 @@ import ru.task.tracker.manager.tasks.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         System.out.println(fbTaskManager.getAllTasks());
         System.out.println(fbTaskManager.getAllEpics());
-        System.out.println(fbTaskManager.getAllSubtask());
+        System.out.println(fbTaskManager.getAllSubtasks());
         System.out.println(fbTaskManager.historyManager.getHistory());
 
 
@@ -52,7 +51,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println(fbTaskManager2.historyManager.getHistory());
         System.out.println(fbTaskManager2.getAllTasks());
         System.out.println(fbTaskManager2.getAllEpics());
-        System.out.println(fbTaskManager2.getAllSubtask());
+        System.out.println(fbTaskManager2.getAllSubtasks());
         int fbTask3 = fbTaskManager2.createTask(new Task("task 3", "Должен быть id = 8"));
         System.out.println(fbTaskManager2.getTaskById(fbTask3));
         System.out.println(fbTaskManager2.historyManager.getHistory());
@@ -190,8 +189,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubtask() {
-        ArrayList<Subtask> listSubtask = super.getAllSubtask();
+    public ArrayList<Subtask> getAllSubtasks() {
+        ArrayList<Subtask> listSubtask = super.getAllSubtasks();
         save();
         return listSubtask;
     }

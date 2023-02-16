@@ -4,6 +4,7 @@ import ru.task.tracker.manager.tasks.Epic;
 import ru.task.tracker.manager.tasks.Subtask;
 import ru.task.tracker.manager.tasks.Task;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Интерфейс менеджера задач со всей логикой работы, отвечающий за управление классами задач.
@@ -30,7 +31,7 @@ import java.util.ArrayList;
      *
      * @return список всех подзадач
      */
-     ArrayList<Subtask> getAllSubtask();
+     ArrayList<Subtask> getAllSubtasks();
 
     /**
      * Метод удаления всех задач

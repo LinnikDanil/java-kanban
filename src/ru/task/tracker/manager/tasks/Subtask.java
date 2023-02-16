@@ -5,6 +5,7 @@ package ru.task.tracker.manager.tasks;
  * Является дочерним классом {@link Task}
  */
 public class Subtask extends Task {
+
     private Integer epicId; //Знаем, к какому эпику пренадлежим
 
     /**
@@ -35,6 +36,10 @@ public class Subtask extends Task {
 
     public Integer getEpicId() {
         return epicId;
+    }
+
+    public void setEpicId(Integer epicId) {
+        this.epicId = epicId;
     }
 
     @Override
