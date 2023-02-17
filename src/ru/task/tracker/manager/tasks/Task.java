@@ -31,7 +31,7 @@ public class Task {
         this.description = description;
         this.status = StatusesOfTask.NEW;
         this.duration = Duration.ZERO;
-        this.startTime = LocalDateTime.of(1970, 1, 1, 0, 0);
+        this.startTime = LocalDateTime.MAX;
         type = TypeOfTasks.TASK;
     }
 
@@ -49,7 +49,7 @@ public class Task {
         this.description = description;
         this.status = status;
         this.duration = Duration.ZERO;
-        this.startTime = LocalDateTime.of(1970, 1, 1, 0, 0);
+        this.startTime = LocalDateTime.MAX;
         type = TypeOfTasks.TASK;
     }
 
@@ -129,7 +129,7 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        LocalDateTime endTime = startTime.plus(duration);
+        LocalDateTime endTime = getStartTime().plus(getDuration());
         return endTime;
     }
 
@@ -142,7 +142,9 @@ public class Task {
                 Objects.equals(name, otherTask.name) &&
                 Objects.equals(description, otherTask.description) &&
                 Objects.equals(status, otherTask.status) &&
-                Objects.equals(type, otherTask.type);
+                Objects.equals(type, otherTask.type) &&
+                Objects.equals(startTime, otherTask.startTime) &&
+                Objects.equals(duration, otherTask.duration);
     }
 
     @Override

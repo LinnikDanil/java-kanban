@@ -80,6 +80,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     for (int i = 1; i < bufferedStrings.size() - 2; i++) {//Работа с тасками
                         Task task = fileBackedTasksManager.fromString(bufferedStrings.get(i));
                         allTasks.put(task.getId(), task);
+                        fileBackedTasksManager.sortedTasks.add(task);
                     }
 
                     List<Integer> history = InMemoryHistoryManager.historyFromString(//Работа с историей

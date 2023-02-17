@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,17 +40,33 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     @AfterEach
     void afterEach(){
+        testTaskManager.clearAllTasks();
+        testTaskManager.clearAllEpics();
+        testTaskManager.clearAllSubtasks();
         file.delete();
     }
 
     @Test
+    void testTreeSet(){
+        int t1 = testTaskManager.createTask(new Task("Test1", "Test1",
+                LocalDateTime.of(2020, 1, 1, 1, 1), Duration.ofHours(1)));
+        int t2 = testTaskManager.createTask(new Task("Test2", "Test2",
+                LocalDateTime.of(2019, 1, 1, 1, 1), Duration.ofHours(1)));
+        int t3 = testTaskManager.createTask(new Task("Test3", "Test3",
+                LocalDateTime.of(2014, 1, 1, 1, 1), Duration.ofHours(1)));
+        int t4 = testTaskManager.createTask(new Task("Test4", "Test4",
+                LocalDateTime.of(2030, 1, 1, 1, 1), Duration.ofHours(1)));
+        List<Task> list = List.of(
+                testTaskManager.getTaskById(t3),
+                testTaskManager.getTaskById(t2),
+                testTaskManager.getTaskById(t1),
+                testTaskManager.getTaskById(t4)
+        );
+        assertArrayEquals(testTaskManager.getPrioritizedTasks().toArray(), list.toArray());
+    }
+
+    @Test
     void testMethodLoadFromEmptyFile() {
-        //2 часа пытался найти причину, по которой у меня в истории появляются эти два сабтаска, которые создаются в
-        //beforeEach, но так и не нашёл. Пробовал создавать новый файл, новые экземпляры FileBackedTasksManager, но
-        //ничего не помогло. Поэтому удаляю лишние сабтаски вручную и после этого тест работает нормально, также, как и
-        //при сольном запуске.
-        testTaskManager.historyManager.remove(2);
-        testTaskManager.historyManager.remove(3);
         FileBackedTasksManager tasksManagerTest2 = FileBackedTasksManager.loadFromFile(file);
 
         List<Task> list = Collections.emptyList();
