@@ -16,7 +16,7 @@ import java.util.Map;
  * TaskManager, позволяющий сохранять и использовать данные из файлов для работы с тасками
  */
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private final File data_tasks; // файл с данными о тасках
+    private final File dataTasks; // файл с данными о тасках
 
     /**
      * Конструктор создания класса
@@ -25,11 +25,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      */
     public FileBackedTasksManager(File file) {
         super();
-        data_tasks = file;
+        dataTasks = file;
     }
 
     public static void main(String[] args) {
-        FileBackedTasksManager fbTaskManager = new FileBackedTasksManager(new File("resources/data_tasks.csv"));
+        FileBackedTasksManager fbTaskManager = new FileBackedTasksManager(new File("dataTasks.csv"));
 
         System.out.println("Test FileBackedTasksManager\n");
         int fbTask1 = fbTaskManager.createTask(new Task("task 1", "test Task 1"));
@@ -47,7 +47,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
         FileBackedTasksManager fbTaskManager2 = FileBackedTasksManager.loadFromFile(
-                new File("resources/data_tasks.csv"));
+                new File("dataTasks.csv"));
 
         System.out.println("\n\n Проверяем загрузку информации с файла... ");
         System.out.println(fbTaskManager2.historyManager.getHistory());
@@ -114,7 +114,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      * Метод сохранения данных о тасках и истории в файл
      */
     private void save() {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(data_tasks, StandardCharsets.UTF_8, false))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dataTasks, StandardCharsets.UTF_8, false))) {
             bufferedWriter.write("id,type,name,status,description,startTime,duration,epic\n");
             for (Task task : tasks.values()) {
                 bufferedWriter.write(task.toCsv() + "\n");

@@ -1,9 +1,6 @@
-package ru.task.tracker.tests;
+package ru.task.tracker.manager;
 
 import org.junit.jupiter.api.BeforeEach;
-import ru.task.tracker.manager.InMemoryTaskManager;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Override

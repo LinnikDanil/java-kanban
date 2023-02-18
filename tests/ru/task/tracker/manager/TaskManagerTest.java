@@ -1,9 +1,7 @@
-package ru.task.tracker.tests;
+package ru.task.tracker.manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
-import ru.task.tracker.manager.TaskManager;
 import ru.task.tracker.manager.tasks.Epic;
 import ru.task.tracker.manager.tasks.StatusesOfTask;
 import ru.task.tracker.manager.tasks.Subtask;

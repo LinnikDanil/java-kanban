@@ -1,13 +1,9 @@
-package ru.task.tracker.tests;
+package ru.task.tracker.manager;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import ru.task.tracker.manager.FileBackedTasksManager;
-import ru.task.tracker.manager.InMemoryTaskManager;
-import ru.task.tracker.manager.tasks.Epic;
 import ru.task.tracker.manager.tasks.Subtask;
 import ru.task.tracker.manager.tasks.Task;
 

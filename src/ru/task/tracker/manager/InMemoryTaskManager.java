@@ -40,38 +40,14 @@ public class InMemoryTaskManager implements TaskManager {
         LocalDateTime timeEndTask = task.getEndTime();
 
         for (Task t : sortedTasks) {
-            LocalDateTime tempStart = t.getStartTime();
-            LocalDateTime tempEnd = t.getEndTime();
+            LocalDateTime tempTimeStartTask = t.getStartTime();
+            LocalDateTime tempTimeEndTask = t.getEndTime();
 
-            //Начальное время таска раньше начала временного таска
-            if (timeStartTask.isBefore(tempStart)) {
-                if (timeEndTask.isBefore(tempEnd) ||
-                        timeEndTask.isAfter(tempEnd) ||
-                        timeEndTask.isEqual(tempEnd) ||
-                        timeEndTask.isEqual(tempStart)
-                ) {
-                    return false;
-                }
-                //Начальное время таска позже начала временного таска
-            } else if (timeStartTask.isAfter(tempStart)) {
-                if (timeEndTask.isAfter(tempEnd) ||
-                        timeStartTask.isBefore(tempEnd) ||
-                        timeEndTask.isEqual(tempEnd) ||
-                        timeStartTask.isEqual(tempEnd)
-                ) {
-                    return false;
-                }
-                //Начальное время таска равно началу временного таска
-            } else if (timeStartTask.isEqual(tempStart)) {
-                if (timeEndTask.isBefore(tempEnd) ||
-                        timeEndTask.isAfter(tempEnd) ||
-                        timeEndTask.isEqual(tempEnd)
-                ) {
-                    return false;
-                }
+            if (timeStartTask.isAfter(tempTimeEndTask) || timeEndTask.isBefore(tempTimeStartTask)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 
