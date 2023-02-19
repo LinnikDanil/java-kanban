@@ -5,6 +5,8 @@ import ru.task.tracker.manager.tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Класс менеджера истории, имплементирующий интерфейс {@link HistoryManager}, отвечает за работу с историей полученных задач.
@@ -33,20 +35,12 @@ public class InMemoryHistoryManager implements HistoryManager {
      * @return
      */
     public static String historyToString(HistoryManager manager) {
-        StringBuilder stringBuilder = new StringBuilder();
-        int countHistory = 0;
-
-        for (Task task : manager.getHistory()) {
-            countHistory++;
-            if (countHistory >= manager.getHistory().size()) {
-                stringBuilder.append(String.format("%d", task.getId()));
-            } else {
-                stringBuilder.append(task.getId() + ",");
-            }
-        }
-        return stringBuilder.toString();
+        return manager.getHistory()
+                .stream()
+                .map(Task::getId)
+                .map(Objects::toString)
+                .collect(Collectors.joining(","));
     }
-
     /**
      * Преобразование строки в список айди тасков из истории
      * @param value
