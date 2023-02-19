@@ -28,9 +28,11 @@ public class InMemoryTaskManager implements TaskManager {
         this.tasks = new HashMap<>();
         this.epics = new HashMap<>();
         this.subtasks = new HashMap<>();
-        this.sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+        this.sortedTasks = new TreeSet<>(Comparator.comparing(Task::getId));
+        //this.sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
     }
 
+    @Override
     public List<Task> getPrioritizedTasks() {
         return List.copyOf(sortedTasks);
     }
@@ -49,7 +51,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return false;
     }
-
 
     @Override
     public ArrayList<Task> getAllTasks() {
