@@ -80,6 +80,18 @@ public class Task {
         type = TypeOfTasks.TASK;
     }
 
+
+    public Task(TypeOfTasks type, String name, String description, int id, StatusesOfTask status,
+                LocalDateTime startTime, Duration duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.type = type;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

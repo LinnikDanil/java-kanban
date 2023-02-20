@@ -2,7 +2,7 @@ package ru.task.tracker.manager.tasks;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Класс, отвечающий за создание епиков (задач с подзадачами).
@@ -47,11 +47,17 @@ public class Epic extends Task {
         subtasks = new ArrayList<>();
         type = TypeOfTasks.EPIC;
     }
-    public Epic(int id, String name, String description,
-                StatusesOfTask statusesOfTask, LocalDateTime startTime, Duration duration) {
-        super(id, name, description, statusesOfTask, startTime, duration);
-        subtasks = new ArrayList<>();
-        type = TypeOfTasks.EPIC;
+//    public Epic(int id, String name, String description,
+//                StatusesOfTask statusesOfTask, LocalDateTime startTime, Duration duration) {
+//        super(id, name, description, statusesOfTask, startTime, duration);
+//        subtasks = new ArrayList<>();
+//        type = TypeOfTasks.EPIC;
+//    }
+
+    public Epic(TypeOfTasks type, String name, String description, int id,
+                StatusesOfTask statusesOfTask) {
+        super(type, name, description, id, statusesOfTask, null, Duration.ZERO);
+        this.subtasks = new ArrayList<>();
     }
 
     public void addSubtask(int SubtaskId) {

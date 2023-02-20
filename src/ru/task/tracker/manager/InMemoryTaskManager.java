@@ -28,8 +28,7 @@ public class InMemoryTaskManager implements TaskManager {
         this.tasks = new HashMap<>();
         this.epics = new HashMap<>();
         this.subtasks = new HashMap<>();
-        this.sortedTasks = new TreeSet<>(Comparator.comparing(Task::getId));
-        //this.sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+        this.sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
     }
 
     @Override
@@ -38,6 +37,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean validatorTimeForTask(Task task) {
+        if (task.getStartTime().equals(null) || task.getEndTime().equals(null)) {
+            return true;
+        }
         LocalDateTime timeStartTask = task.getStartTime();
         LocalDateTime timeEndTask = task.getEndTime();
 
@@ -129,25 +131,24 @@ public class InMemoryTaskManager implements TaskManager {
     public Task getTaskById(int taskId) {
         if (tasks.containsKey(taskId)) {
             historyManager.add(tasks.get(taskId));
-            return tasks.get(taskId);
-        } else throw new NullPointerException("Отсутствует таск по заданному id");
+        }
+        return tasks.get(taskId);
     }
 
     @Override
     public Epic getEpicById(int epicId) {
         if (epics.containsKey(epicId)) {
             historyManager.add(epics.get(epicId));
-            return epics.get(epicId);
-        } else throw new NullPointerException("Отсутствует эпик по заданному id");
+        }
+        return epics.get(epicId);
     }
 
     @Override
     public Subtask getSubtaskById(int subtaskId) {
         if (subtasks.containsKey(subtaskId)) {
             historyManager.add(subtasks.get(subtaskId));
-            return subtasks.get(subtaskId);
-        } else throw new NullPointerException("Отсутствует сабтаск по заданному id");
-
+        }
+        return subtasks.get(subtaskId);
     }
 
     @Override
@@ -284,9 +285,8 @@ public class InMemoryTaskManager implements TaskManager {
                 subtasksInEpic.add(subtasks.get(i));
                 historyManager.add(subtasks.get(i));
             }
-            return subtasksInEpic;
-        } else throw new IllegalArgumentException("Отсутсвует id эпика");
-
+        }
+        return subtasksInEpic;
     }
 
     /**

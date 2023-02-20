@@ -1,4 +1,4 @@
-package ru.task.tracker.manager;
+package ru.task.tracker.server;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -13,7 +13,20 @@ import com.sun.net.httpserver.HttpServer;
 /**
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
  */
+/*
 
+
+
+
+В РАЗРАБОТКЕ...
+
+
+
+
+
+
+
+ */
 public class KVTaskClient {
     public static final int PORT = 8078;
     private final String apiToken;

@@ -85,13 +85,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
                     List<Integer> history = InMemoryHistoryManager.historyFromString(//Работа с историей
                             bufferedStrings.get(bufferedStrings.size() - 1));
-
                     for (int element : history) {
                         if (allTasks.containsKey(element)) {
                             fileBackedTasksManager.historyManager.add(allTasks.get(element));
                         }
                     }
-
                     int maxId = 0;
                     for (int id : allTasks.keySet()){
                         if (id > maxId){
@@ -160,7 +158,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     return task;
 
                 case EPIC:
-                    Epic epic = new Epic(id, name, description, status, startTime, duration);
+                    Epic epic = new Epic(id, name, description, status);
                     epics.put(id, epic);
                     return epic;
 

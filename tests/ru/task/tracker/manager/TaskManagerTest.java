@@ -324,10 +324,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void testMethodGetAllSubtaskByEpicIdWithWrongIdEpic() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> testTaskManager.getAllSubtaskByEpicId(-1)
-        );
-        assertEquals(exception.getMessage(), "Отсутсвует id эпика");
+        assertDoesNotThrow(() -> testTaskManager.getAllSubtaskByEpicId(-1));
     }
 }
