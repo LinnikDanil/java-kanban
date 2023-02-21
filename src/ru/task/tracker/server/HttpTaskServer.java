@@ -252,65 +252,79 @@ public class HttpTaskServer {
             String[] uriParts = requestUri.split("/");
 
             if ("GET".equals(requestMethod)) {
-                if (uriParts.length == 2 && uriParts[1].equals("tasks")) {
+                if (requestUri.contains("?id=")) {
+                    if (uriParts.length == 4) {
+                        if (uriParts[2].equals("task")) {
+                            return Endpoints.GET_TASK_ID;
+
+                        } else if (uriParts[2].equals("epic")) {
+                            return Endpoints.GET_EPIC_ID;
+
+                        } else if (uriParts[2].equals("subtask")) {
+                            return Endpoints.GET_SUBTASK_ID;
+
+                        }
+                    } else if (uriParts.length == 5) {
+                        return Endpoints.GET_SUBTASK_EPIC_ID;
+                    }
+
+                } else if (uriParts.length == 3) {
+                    if (uriParts[2].equals("history")) {
+                        return Endpoints.GET_TASKS_HISTORY;
+
+                    } else if (uriParts[2].equals("task")) {
+                        return Endpoints.GET_TASK;
+
+                    } else if (uriParts[2].equals("epic")) {
+                        return Endpoints.GET_EPIC;
+
+                    } else if (uriParts[2].equals("subtask")) {
+                        return Endpoints.GET_SUBTASK;
+                    }
+
+                } else if (uriParts.length == 2 && uriParts[1].equals("tasks")) {
                     return Endpoints.GET_ALL_TASKS;
-
-                } else if (uriParts.length == 3 && uriParts[2].equals("history")) {
-                    return Endpoints.GET_TASKS_HISTORY;
-
-                } else if (uriParts.length == 5 && uriParts[4].contains("?id=")) {
-                    return Endpoints.GET_SUBTASK_EPIC_ID;
-
-                } else if (uriParts.length == 4 && uriParts[2].equals("task") && uriParts[3].contains("?id=")) {
-                    return Endpoints.GET_TASK_ID;
-
-                } else if (uriParts.length == 3 && uriParts[2].equals("task")) {
-                    return Endpoints.GET_TASK;
-
-                } else if (uriParts.length == 4 && uriParts[2].equals("epic") && uriParts[3].contains("?id=")) {
-                    return Endpoints.GET_EPIC_ID;
-
-                } else if (uriParts.length == 3 && uriParts[2].equals("epic")) {
-                    return Endpoints.GET_EPIC;
-
-                } else if (uriParts.length == 4 && uriParts[2].equals("subtask") && uriParts[3].contains("?id=")) {
-                    return Endpoints.GET_SUBTASK_ID;
-
-                } else if (uriParts.length == 3 && uriParts[2].equals("subtask")) {
-                    return Endpoints.GET_SUBTASK;
                 }
 
             } else if ("POST".equals(requestMethod)) {
                 String[] pathParts = requestPath.split("/");
 
-                if (pathParts.length == 3 && pathParts[2].equals("task")) {
-                    return Endpoints.POST_TASK;
+                if (pathParts.length == 3) {
+                    if (pathParts[2].equals("task")) {
+                        return Endpoints.POST_TASK;
 
-                } else if (pathParts.length == 3 && pathParts[2].equals("epic")) {
-                    return Endpoints.POST_EPIC;
+                    } else if (pathParts[2].equals("epic")) {
+                        return Endpoints.POST_EPIC;
 
-                } else if (pathParts.length == 3 && pathParts[2].equals("subtask")) {
-                    return Endpoints.POST_SUBTASK;
+                    } else if (pathParts[2].equals("subtask")) {
+                        return Endpoints.POST_SUBTASK;
+                    }
                 }
 
             } else if ("DELETE".equals(requestMethod)) {
-                if (uriParts.length == 4 && uriParts[2].equals("task") && uriParts[3].contains("?id=")) {
-                    return Endpoints.DELETE_TASK_ID;
+                if (uriParts.length == 4 && uriParts[3].contains("?id=")) {
+                    if (uriParts[2].equals("task")) {
+                        return Endpoints.DELETE_TASK_ID;
 
-                } else if (uriParts.length == 3 && uriParts[2].equals("task")) {
-                    return Endpoints.DELETE_TASK;
+                    }
+                    else if (uriParts[2].equals("epic")) {
+                        return Endpoints.DELETE_EPIC_ID;
 
-                } else if (uriParts.length == 4 && uriParts[2].equals("epic") && uriParts[3].contains("?id=")) {
-                    return Endpoints.DELETE_EPIC_ID;
+                    }
+                    else if (uriParts[2].equals("subtask")) {
+                        return Endpoints.DELETE_SUBTASK_ID;
 
-                } else if (uriParts.length == 3 && uriParts[2].equals("epic")) {
-                    return Endpoints.DELETE_EPIC;
+                    }
+                } else if (uriParts.length == 3) {
+                    if (uriParts[2].equals("task")) {
+                        return Endpoints.DELETE_TASK;
 
-                } else if (uriParts.length == 4 && uriParts[2].equals("subtask") && uriParts[3].contains("?id=")) {
-                    return Endpoints.DELETE_SUBTASK_ID;
+                    }  else if (uriParts[2].equals("epic")) {
+                        return Endpoints.DELETE_EPIC;
 
-                } else if (uriParts.length == 3 && uriParts[2].equals("subtask")) {
-                    return Endpoints.DELETE_SUBTASK;
+                    }  else if (uriParts[2].equals("subtask")) {
+                        return Endpoints.DELETE_SUBTASK;
+                    }
                 }
             }
             return Endpoints.UNKNOWN;
