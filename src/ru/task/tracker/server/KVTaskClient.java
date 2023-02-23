@@ -3,32 +3,19 @@ package ru.task.tracker.server;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-/**
- * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
- */
-/*
-
-
-
-
-В РАЗРАБОТКЕ...
-
-
-
-
-
-
-
- */
 public class KVTaskClient {
     public static final int PORT = 8078;
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final String apiToken;
     private final HttpServer server;
     private final Map<String, String> data = new HashMap<>();
@@ -42,7 +29,41 @@ public class KVTaskClient {
     }
 
     private void load(HttpExchange h) {
-        // TODO Добавьте получение значения по ключу
+        try {
+            System.out.println("\n/load");
+            if (!hasAuth(h)) {
+                System.out.println("Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
+                h.sendResponseHeaders(403, 0);
+                return;
+            }
+            if ("GET".equals(h.getRequestMethod())) {
+                String key = h.getRequestURI().getPath().substring("/save/".length());
+                if (key.isEmpty()) {
+                    System.out.println("Key для сохранения пустой. key указывается в пути: /save/{key}");
+                    h.sendResponseHeaders(400, 0);
+                    return;
+                }
+                System.out.println("Значение ключа - " + key + ": идёт отправка данных клиенту.");
+                if (!data.containsKey(key)) {
+                    h.sendResponseHeaders(404, 0);
+                    System.out.println("Отправка не состоялась");
+                } else {
+                    byte[] bytes = data.get(key).getBytes(DEFAULT_CHARSET);
+                    h.sendResponseHeaders(200, bytes.length);
+                    try (OutputStream os = h.getResponseBody()) {
+                        os.write(bytes);
+                    }
+                    System.out.println("Отправка прошла успешно");
+                }
+            } else {
+                System.out.println("/load ждёт GET-запрос, а получил: " + h.getRequestMethod());
+                h.sendResponseHeaders(405, 0);
+            }
+        } catch (Exception ex) {
+
+        } finally {
+            h.close();
+        }
     }
 
     private void save(HttpExchange h) throws IOException {
@@ -97,6 +118,11 @@ public class KVTaskClient {
         System.out.println("Открой в браузере http://localhost:" + PORT + "/");
         System.out.println("API_TOKEN: " + apiToken);
         server.start();
+    }
+
+    public void stop() {
+        System.out.println("Завершение работы сервера...");
+        server.stop(0);
     }
 
     private String generateApiToken() {

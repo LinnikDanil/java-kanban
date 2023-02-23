@@ -50,8 +50,8 @@ public class InMemoryHistoryManager implements HistoryManager {
         List<Integer> history = new ArrayList<>();
         if (!value.isBlank()) {
             String[] splitHistory = value.split(",");
-            for (String s : splitHistory) {
-                history.add(Integer.parseInt(s));
+            for (int i = splitHistory.length-1; i >= 0; i--) {
+                history.add(Integer.parseInt(splitHistory[i]));
             }
         }
         return history;

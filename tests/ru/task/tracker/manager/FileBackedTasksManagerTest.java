@@ -19,9 +19,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
+
+    File file;
     @TempDir
     private Path directory;
-    File file;
+
     @Override
     @BeforeEach
     void createTasksForTest() {
@@ -35,7 +37,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     }
 
     @AfterEach
-    void afterEach(){
+    void afterEach() {
         testTaskManager.clearAllTasks();
         testTaskManager.clearAllEpics();
         testTaskManager.clearAllSubtasks();
@@ -43,7 +45,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     }
 
     @Test
-    void testTreeSet(){
+    void testTreeSet() {
         int t1 = testTaskManager.createTask(new Task("Test1", "Test1",
                 LocalDateTime.of(2020, 1, 1, 1, 1), Duration.ofHours(1)));
         int t2 = testTaskManager.createTask(new Task("Test2", "Test2",
@@ -69,8 +71,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertArrayEquals(list.toArray(), tasksManagerTest2.getAllTasks().toArray());
         assertArrayEquals(list.toArray(), tasksManagerTest2.getAllEpics().toArray());
         assertArrayEquals(list.toArray(), tasksManagerTest2.getAllSubtasks().toArray());
-        assertArrayEquals(list.toArray(), tasksManagerTest2.historyManager.getHistory().toArray());
+        assertArrayEquals(list.toArray(), tasksManagerTest2.getHistoryManager().getHistory().toArray());
     }
+
     @Test
     void testMethodLoadFromFile() {
         int taskId = testTaskManager.createTask(task1);
@@ -85,7 +88,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertArrayEquals(testTaskManager.getAllTasks().toArray(), tasksManagerTest2.getAllTasks().toArray());
         assertArrayEquals(testTaskManager.getAllEpics().toArray(), tasksManagerTest2.getAllEpics().toArray());
         assertArrayEquals(testTaskManager.getAllSubtasks().toArray(), tasksManagerTest2.getAllSubtasks().toArray());
-        assertArrayEquals(testTaskManager.historyManager.getHistory().toArray(),
-                          tasksManagerTest2.historyManager.getHistory().toArray());
+        assertArrayEquals(testTaskManager.getHistoryManager().getHistory().toArray(),
+                tasksManagerTest2.getHistoryManager().getHistory().toArray());
     }
 }

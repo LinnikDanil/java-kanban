@@ -5,16 +5,22 @@ import ru.task.tracker.manager.tasks.Subtask;
 import ru.task.tracker.manager.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 /**
  * Интерфейс менеджера задач со всей логикой работы, отвечающий за управление классами задач.
  */
  public interface TaskManager {
 
-    HistoryManager historyManager = Managers.getDefaultHistory();;
+    /**
+     * Метод получения менеждера истории
+     * @return
+     */
+    public HistoryManager getHistoryManager();
 
-
+    /**
+     * Метод получения отсортированного по времени списка всех задач и подзадач
+     * @return
+     */
     public List<Task> getPrioritizedTasks();
 
     /**

@@ -13,51 +13,42 @@ public class Epic extends Task {
     private final ArrayList<Integer> subtasks;
 
     /**
-     * Конструктор - создание объекта
+     * Конструктор создания эпика
+     *
      * @param name
      * @param description
      */
     public Epic(String name, String description) {
-        super(name, description);
+        super(
+                name,
+                description,
+                LocalDateTime.now().plusYears(100),
+                Duration.ZERO,
+                TypeOfTasks.EPIC
+        );
         subtasks = new ArrayList<>();
-        type = TypeOfTasks.EPIC;
+        endTime = getStartTime();
     }
 
     /**
-     * Конструктор - обновление объекта
+     * Конструктор обновления эпика
+     *
      * @param id
      * @param name
      * @param description
      */
     public Epic(int id, String name, String description) {
-        super(id, name, description, StatusesOfTask.NEW);
+        super(
+                id,
+                name,
+                description,
+                StatusesOfTask.NEW,
+                LocalDateTime.now().plusYears(100),
+                Duration.ZERO,
+                TypeOfTasks.EPIC
+        );
         subtasks = new ArrayList<>();
-        type = TypeOfTasks.EPIC;
-    }
-
-    /**
-     * Конструктор - загрузка эпика из файла
-     * @param id
-     * @param name
-     * @param description
-     * @param statusesOfTask
-     */
-    public Epic(int id, String name, String description, StatusesOfTask statusesOfTask) {
-        super(id, name, description, statusesOfTask);
-        subtasks = new ArrayList<>();
-        type = TypeOfTasks.EPIC;
-    }
-//    public Epic(int id, String name, String description,
-//                StatusesOfTask statusesOfTask, LocalDateTime startTime, Duration duration) {
-//        super(id, name, description, statusesOfTask, startTime, duration);
-//        subtasks = new ArrayList<>();
-//        type = TypeOfTasks.EPIC;
-//    }
-
-    public Epic(TypeOfTasks type, String name, String description, int id,
-                StatusesOfTask statusesOfTask) {
-        super(type, name, description, id, statusesOfTask, null, Duration.ZERO);
-        this.subtasks = new ArrayList<>();
+        endTime = getStartTime();
     }
 
     public void addSubtask(int SubtaskId) {
@@ -69,16 +60,16 @@ public class Epic extends Task {
     }
 
     public void setSubtasks(ArrayList<Integer> subtasks) {
-        for(int subtask : subtasks){
+        for (int subtask : subtasks) {
             this.subtasks.add(subtask);
         }
     }
 
-    public void removeSubtask(Integer subtaskId){
+    public void removeSubtask(Integer subtaskId) {
         subtasks.remove(subtaskId);
     }
 
-    public void clearSubtasks(){
+    public void clearSubtasks() {
         subtasks.clear();
     }
 
@@ -88,9 +79,6 @@ public class Epic extends Task {
 
     @Override
     public LocalDateTime getEndTime() {
-        if (endTime == null){
-            return getStartTime().plus(getDuration());
-        }
         return endTime;
     }
 

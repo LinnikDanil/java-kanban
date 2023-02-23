@@ -10,7 +10,7 @@ import java.util.Objects;
  * Также является родителем для подклассов {@link Subtask} и {@link Epic}
  */
 public class Task {
-    protected TypeOfTasks type;
+    private TypeOfTasks type;
     private String name; //название задачи
     private String description; //описание задачи
     private int id;
@@ -21,8 +21,7 @@ public class Task {
     private LocalDateTime startTime; //Дата, когда предполагается приступить к выполнению задачи
 
     /**
-     * Конструктор - создание нового объекта
-     *
+     * Конструктор - создание таска без времени
      * @param name
      * @param description
      */
@@ -31,41 +30,12 @@ public class Task {
         this.description = description;
         this.status = StatusesOfTask.NEW;
         this.duration = Duration.ZERO;
-        this.startTime = LocalDateTime.MAX;
+        this.startTime = LocalDateTime.now().plusYears(100);
         type = TypeOfTasks.TASK;
     }
 
     /**
-     * Конструктор для обновления таска и сабтаска
-     *
-     * @param id
-     * @param name
-     * @param description
-     * @param status
-     */
-    public Task(int id, String name, String description, StatusesOfTask status) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.duration = Duration.ZERO;
-        this.startTime = LocalDateTime.MAX;
-        type = TypeOfTasks.TASK;
-    }
-
-    public Task(int id, String name, String description, StatusesOfTask status,
-                LocalDateTime startTime, Duration duration) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.duration = duration;
-        this.startTime = startTime;
-        type = TypeOfTasks.TASK;
-    }
-    /**
-     * Конструктор для создания таска с временем
-     *
+     * Конструктор - создание таска с временем
      * @param name
      * @param description
      * @param startTime
@@ -80,9 +50,72 @@ public class Task {
         type = TypeOfTasks.TASK;
     }
 
+    /**
+     * Конструктор для метода обновления таска без времени
+     * @param id
+     * @param name
+     * @param description
+     * @param status
+     */
+    public Task(int id, String name, String description, StatusesOfTask status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = Duration.ZERO;
+        this.startTime = LocalDateTime.now().plusYears(100);
+        type = TypeOfTasks.TASK;
+    }
 
-    public Task(TypeOfTasks type, String name, String description, int id, StatusesOfTask status,
+    /**
+     * Конструктор для метода обновления таска с временем
+     * @param id
+     * @param name
+     * @param description
+     * @param status
+     * @param startTime
+     * @param duration
+     */
+    public Task(int id, String name, String description, StatusesOfTask status,
                 LocalDateTime startTime, Duration duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        type = TypeOfTasks.TASK;
+    }
+
+    /**
+     * Конструктор для создания сабтасков и эпика
+     * @param name
+     * @param description
+     * @param startTime
+     * @param duration
+     * @param type
+     */
+    public Task(String name, String description, LocalDateTime startTime, Duration duration, TypeOfTasks type) {
+        this.name = name;
+        this.description = description;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.status = StatusesOfTask.NEW;
+        this.type = type;
+    }
+
+    /**
+     * Конструктор для обновления сабтасков и эпика
+     * @param id
+     * @param name
+     * @param description
+     * @param status
+     * @param startTime
+     * @param duration
+     * @param type
+     */
+    public Task(int id, String name, String description, StatusesOfTask status,
+                LocalDateTime startTime, Duration duration, TypeOfTasks type) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -136,10 +169,6 @@ public class Task {
         return startTime;
     }
 
-    public void setType(TypeOfTasks type) {
-        this.type = type;
-    }
-
     public LocalDateTime getEndTime() {
         LocalDateTime endTime = getStartTime().plus(getDuration());
         return endTime;
@@ -162,12 +191,12 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status='" + status + '\'' +
-                ", startTime='" + startTime.toString() + '\'' +
-                ", duration='" + duration.toString() + '\'' +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", id=" + getId() +
+                ", status='" + getStatus() + '\'' +
+                ", startTime='" + getStartTime().toString() + '\'' +
+                ", duration='" + getDuration().toString() + '\'' +
                 '}';
     }
 

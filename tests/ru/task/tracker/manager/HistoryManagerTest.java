@@ -34,7 +34,7 @@ class HistoryManagerTest {
     @Test
     void getHistoryWithTwoElements() {
         Task task = new Task(1, "test1", "test1", StatusesOfTask.NEW);
-        Epic epic = new Epic(2,"test2", "test2", StatusesOfTask.NEW);
+        Epic epic = new Epic(2,"test2", "test2");
         historyManager.add(task);
         historyManager.add(epic);
         LinkedList<Task> listOfTasks = new LinkedList<>();
@@ -46,8 +46,8 @@ class HistoryManagerTest {
     @Test
     void removeElementsInHistory() {
         Task task = new Task(1, "test1", "test1", StatusesOfTask.NEW);
-        Epic epic = new Epic(2,"test2", "test2", StatusesOfTask.NEW);
-        Subtask subtask = new Subtask(3, "test3", "test3", StatusesOfTask.NEW, epic.getId());
+        Epic epic = new Epic(2,"test2", "test2");
+        Subtask subtask = new Subtask(3, "test3", "test3", epic.getId(), StatusesOfTask.NEW);
         historyManager.add(task);
         historyManager.add(epic);
         historyManager.add(subtask);
@@ -66,7 +66,7 @@ class HistoryManagerTest {
     @Test
     void checkAddSecondElementWithOneId() {
         Task task = new Task(1, "test1", "test1", StatusesOfTask.NEW);
-        Epic epic = new Epic(2,"test2", "test2", StatusesOfTask.NEW);
+        Epic epic = new Epic(2,"test2", "test2");
         historyManager.add(task);
         historyManager.add(epic);
         LinkedList<Task> listOfTasks = new LinkedList<>();

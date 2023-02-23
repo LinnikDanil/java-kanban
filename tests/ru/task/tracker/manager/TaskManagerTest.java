@@ -7,6 +7,8 @@ import ru.task.tracker.manager.tasks.StatusesOfTask;
 import ru.task.tracker.manager.tasks.Subtask;
 import ru.task.tracker.manager.tasks.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,12 +27,16 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void createTasksForTest() {
         testTaskManager.clearAllTasks();
         testTaskManager.clearAllEpics();
-        task1 = new Task("TestTask1", "DescriptionForTask1");
-        task2 = new Task("TestTask2", "DescriptionForTask2");
+        task1 = new Task("TestTask1", "DescriptionForTask1",
+                LocalDateTime.of(2023, 01, 01, 01, 1), Duration.ofHours(1));
+        task2 = new Task("TestTask2", "DescriptionForTask2",
+                LocalDateTime.of(2023, 02, 01, 01, 1), Duration.ofHours(1));
         epic1 = new Epic("TestEpic1", "DescriptionForEpic1");
         epic2 = new Epic("TestEpic2", "DescriptionForEpic2");
-        subtask1 = new Subtask("TestSubtask1", "DescriptionForSubtask1", 0);
-        subtask2 = new Subtask("TestSubtask2", "DescriptionForSubtask2", 0);
+        subtask1 = new Subtask("TestSubtask1", "DescriptionForSubtask1", 0,
+                LocalDateTime.of(2023, 03, 01, 01, 1), Duration.ofHours(1));
+        subtask2 = new Subtask("TestSubtask2", "DescriptionForSubtask2", 0,
+                LocalDateTime.of(2023, 04, 01, 01, 1), Duration.ofHours(1));
     }
 
     void putTasksInTaskManager() {
@@ -160,11 +166,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void testMethodGetTaskByIdWithWrongIdOrEmptyTasks() {
-        NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> testTaskManager.getTaskById(-1)
-        );
-        assertEquals("Отсутствует таск по заданному id", exception.getMessage());
+        assertEquals(testTaskManager.getTaskById(-1), null);
     }
 
     //getEpicById and createEpic
@@ -177,29 +179,21 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void testMethodGetEpicByIdWithWrongIdOrEmptyEpics() {
-        NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> testTaskManager.getEpicById(-1)
-        );
-        assertEquals("Отсутствует эпик по заданному id", exception.getMessage());
+        assertEquals(testTaskManager.getEpicById(-1), null);
     }
 
     //getSubtaskById andCreateSubtask
     @Test
     void testMethodGetSubtaskByIdAndMethodCreateSubtask() {
-        int testEpicId = testTaskManager.createEpic(new Epic("Epic1", "EpicForGetEpicById"));
-        Subtask testSubtask = new Subtask("Subtask1", "TestForGetSubtaskById", testEpicId);
-        int testSubtaskId = testTaskManager.createSubtask(testSubtask);
-        assertEquals(testTaskManager.getSubtaskById(testSubtaskId), testSubtask);
+        int testEpicId = testTaskManager.createEpic(epic1);
+        subtask1.setEpicId(testEpicId);
+        int testSubtaskId = testTaskManager.createSubtask(subtask1);
+        assertEquals(testTaskManager.getSubtaskById(testSubtaskId), subtask1);
     }
 
     @Test
     void testMethodGetSubtaskByIdWithWrongIdOrEmptySubtasks() {
-        NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> testTaskManager.getSubtaskById(-1)
-        );
-        assertEquals("Отсутствует сабтаск по заданному id", exception.getMessage());
+        assertEquals(testTaskManager.getSubtaskById(-1), null);
     }
 
     //updateTask
@@ -226,14 +220,14 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void testMethodUpdateEpic() {
         int idOldEpic = testTaskManager.createEpic(new Epic("TestEpicOld", "TestOld"));
-        Epic testEpicNew = new Epic(idOldEpic, "TestEpicNew", "TestNew", StatusesOfTask.NEW);
+        Epic testEpicNew = new Epic(idOldEpic, "TestEpicNew", "TestNew");
         testTaskManager.updateEpic(testEpicNew);
         assertEquals(testEpicNew, testTaskManager.getEpicById(idOldEpic));
     }
 
     @Test
     void testMethodUpdateEpicWithEmptyEpicsOrWrongId() {
-        Epic testEpicNew = new Epic(-1, "TestEpicNew", "TestNew", StatusesOfTask.NEW);
+        Epic testEpicNew = new Epic(-1, "TestEpicNew", "TestNew");
 
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -246,10 +240,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void testMethodUpdateSubtask() {
         int idEpic = testTaskManager.createEpic(new Epic("TestEpic", "TestOld"));
-        int idOldSubtask = testTaskManager.createSubtask(
-                new Subtask("TestSubtaskOld", "TestOld", idEpic));
+        subtask1.setEpicId(idEpic);
+        int idOldSubtask = testTaskManager.createSubtask(subtask1);
         Subtask testSubtaskNew = new Subtask(
-                idOldSubtask, "TestSubtaskNew", "TestNew", StatusesOfTask.NEW, idEpic);
+                idOldSubtask, "TestSubtaskNew", "TestNew", idEpic,
+                StatusesOfTask.NEW, LocalDateTime.now(), Duration.ZERO);
         testTaskManager.updateSubtask(testSubtaskNew);
         assertEquals(testSubtaskNew, testTaskManager.getSubtaskById(idOldSubtask));
     }
@@ -257,7 +252,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void testMethodUpdateSubtaskWithEmptySubtasksOrWrongId() {
         Subtask testSubtaskNew = new Subtask(
-                -1, "TestSubtaskNew", "TestNew", StatusesOfTask.NEW, -1);
+                -1, "TestSubtaskNew", "TestNew", -1, StatusesOfTask.NEW);
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
                 () -> testTaskManager.updateSubtask(testSubtaskNew)
@@ -270,11 +265,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void testMethodRemoveTaskById() {
         int idTask = testTaskManager.createTask(new Task("TestTask", "Test"));
         testTaskManager.removeTaskById(idTask);
-        NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> testTaskManager.getTaskById(idTask)
-        );
-        assertEquals("Отсутствует таск по заданному id", exception.getMessage());
+        assertEquals(testTaskManager.getTaskById(idTask), null);
     }
 
     //removeEpicById
@@ -282,36 +273,29 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void testMethodRemoveEpicById() {
         int idEpic = testTaskManager.createEpic(new Epic("TestEpic", "Test"));
         testTaskManager.removeEpicById(idEpic);
-        NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> testTaskManager.getEpicById(idEpic)
-        );
-        assertEquals("Отсутствует эпик по заданному id", exception.getMessage());
+        assertEquals(testTaskManager.getEpicById(idEpic), null);
     }
 
 
     //removeSubtaskById
     @Test
     void testMethodRemoveSubtaskById() {
-        int idEpic = testTaskManager.createEpic(new Epic("TestEpic", "Test"));
-        int idSubtask = testTaskManager.createSubtask(new Subtask("TestSubtask", "Test", idEpic));
+        int idEpic = testTaskManager.createEpic(epic1);
+        subtask1.setEpicId(idEpic);
+        int idSubtask = testTaskManager.createSubtask(subtask1);
         testTaskManager.removeSubtaskById(idSubtask);
-        NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> testTaskManager.getSubtaskById(idSubtask)
-        );
-        assertEquals("Отсутствует сабтаск по заданному id", exception.getMessage());
+        assertEquals(testTaskManager.getSubtaskById(idSubtask), null);
     }
 
     //getAllSubtaskByEpicId
     @Test
     void testMethodGetAllSubtaskByEpicId() {
         int epicId = testTaskManager.createEpic(epic1);
-        Subtask subtaskTest1 = new Subtask("TestSubtask1", "Test 1", epicId);
-        Subtask subtaskTest2 = new Subtask("TestSubtask2", "Test 2", epicId);
-        int subtaskId1 = testTaskManager.createSubtask(subtaskTest1);
-        int subtaskId2 = testTaskManager.createSubtask(subtaskTest2);
-        List<Subtask> listOfSubtasks = List.of(subtaskTest1, subtaskTest2);
+        subtask1.setEpicId(epicId);
+        subtask2.setEpicId(epicId);
+        testTaskManager.createSubtask(subtask1);
+        testTaskManager.createSubtask(subtask2);
+        List<Subtask> listOfSubtasks = List.of(subtask1, subtask2);
         assertArrayEquals(listOfSubtasks.toArray(), testTaskManager.getAllSubtaskByEpicId(epicId).toArray());
     }
 

@@ -12,41 +12,48 @@ public class Subtask extends Task {
     private Integer epicId; //Знаем, к какому эпику принадлежим
 
     /**
-     * Конструктор - создание объекта
-     *
+     * Конструктор создания сабтаска без времени
      * @param name
      * @param description
+     * @param epicId
      */
     public Subtask(String name, String description, int epicId) {
-        super(name, description);
-        setType(TypeOfTasks.SUBTASK);
+        super(name, description, LocalDateTime.now().plusYears(100), Duration.ZERO, TypeOfTasks.SUBTASK);
         this.epicId = epicId;
     }
 
     /**
-     * Конструктор - обновление метода
+     * Конструктор создания сабтаска с временем
+     * @param name
+     * @param description
+     * @param epicId
+     * @param startTime
+     * @param duration
+     */
+    public Subtask(String name, String description, int epicId, LocalDateTime startTime, Duration duration) {
+        super(name, description, startTime, duration, TypeOfTasks.SUBTASK);
+        this.epicId = epicId;
+    }
+
+
+    public Subtask(int id, String name, String description, int epicId, StatusesOfTask status) {
+        super(id, name, description, status, LocalDateTime.now().plusYears(100), Duration.ZERO, TypeOfTasks.SUBTASK);
+        this.epicId = epicId;
+    }
+
+    /**
+     * Конструктор обновления сабтаска с верменем
      * @param id
      * @param name
      * @param description
-     * @param status
      * @param epicId
+     * @param status
+     * @param startTime
+     * @param duration
      */
-    public Subtask(int id, String name, String description, StatusesOfTask status, int epicId) {
-        super(id, name, description, status);
-        setType(TypeOfTasks.SUBTASK);
-        this.epicId = epicId;
-    }
-
-    public Subtask(int id, String name, String description, StatusesOfTask status, int epicId,
+    public Subtask(int id, String name, String description, int epicId, StatusesOfTask status,
                    LocalDateTime startTime, Duration duration) {
-        super(id, name, description, status, startTime, duration);
-        setType(TypeOfTasks.SUBTASK);
-        this.epicId = epicId;
-    }
-
-    public Subtask(String name, String description, int epicId, LocalDateTime startTime, Duration duration) {
-        super(name, description, startTime, duration);
-        setType(TypeOfTasks.SUBTASK);
+        super(id, name, description, status, startTime, duration, TypeOfTasks.SUBTASK);
         this.epicId = epicId;
     }
 

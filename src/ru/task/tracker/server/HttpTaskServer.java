@@ -78,8 +78,8 @@ public class HttpTaskServer {
                     break;
 
                 case GET_TASKS_HISTORY:
-                    if (!taskManager.historyManager.getHistory().isEmpty()) {
-                        String history = gson.toJson(taskManager.historyManager.getHistory());
+                    if (!taskManager.getHistoryManager().getHistory().isEmpty()) {
+                        String history = gson.toJson(taskManager.getHistoryManager().getHistory());
                         writeResponse(exchange, history, 200);
                     } else writeResponse(exchange, "История пуста.", 404);
                     break;
@@ -227,11 +227,21 @@ public class HttpTaskServer {
                 } else if (endpoint.equals(Endpoints.POST_SUBTASK)) {
                     Subtask subtask = gson.fromJson(body, Subtask.class);
                     if (taskManager.getSubtaskById(subtask.getId()) != null) {
-                        taskManager.updateSubtask(subtask);
-                        writeResponse(exchange, "Подзадача успешно обновлена", 200);
+                        try {
+                            taskManager.updateSubtask(subtask);
+                            writeResponse(exchange, "Подзадача успешно обновлена", 200);
+                        } catch (IllegalArgumentException ex) {
+                            writeResponse(exchange, "Эпика с таким id не существует", 404);
+                        }
+
                     } else {
-                        taskManager.createSubtask(subtask);
-                        writeResponse(exchange, "Подзадача успешно создана", 200);
+                        try {
+                            taskManager.createSubtask(subtask);
+                            writeResponse(exchange, "Подзадача успешно создана", 200);
+                        } catch (IllegalArgumentException ex) {
+                            writeResponse(exchange, "Эпика с таким id не существует", 404);
+                        }
+
                     }
                 }
             } catch (JsonSyntaxException ex) {

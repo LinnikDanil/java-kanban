@@ -2,6 +2,9 @@ package ru.task.tracker;
 
 import ru.task.tracker.manager.*;
 import ru.task.tracker.manager.tasks.*;
+import ru.task.tracker.server.KVTaskClient;
+
+import java.io.IOException;
 
 /**
  * Основной класс приложения
@@ -11,8 +14,10 @@ import ru.task.tracker.manager.tasks.*;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        new KVTaskClient().start();
         TaskManager taskManager = Managers.getDefault();
+
         System.out.println("\n1 - Tasks");
         System.out.println("Создали 1 таск");
         int taskId1 = taskManager.createTask(new Task("Уборка", "Сделать домашнюю уборку"));
@@ -24,7 +29,7 @@ public class Main {
         System.out.println("Обновление Таска");
         taskManager.updateTask(new Task(taskId1, "Курс", "Сдать последний ТЗ", StatusesOfTask.NEW));
         System.out.println(taskManager.getAllTasks());
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
         System.out.println("Удалить таск по айди");
         taskManager.removeTaskById(taskId1);
         System.out.println(taskManager.getAllTasks());
@@ -38,7 +43,7 @@ public class Main {
         System.out.println(taskManager.getAllTasks());
 
         System.out.println("\n2 - Epics");
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
         System.out.println("Создали 1 эпик");
         int epicId1 = taskManager.createEpic(new Epic("Епик 1", "Проверка епика 1"));
         System.out.println("Просмотр эпика по айди");
@@ -47,7 +52,8 @@ public class Main {
         int epicId2 = taskManager.createEpic(new Epic("Епик 2", "Проверка эпика 2"));
         System.out.println(taskManager.getAllEpics());
         System.out.println("Обновление эпика");
-        int subtaskId0 = taskManager.createSubtask(new Subtask(0, "1", "1", StatusesOfTask.IN_PROGRESS, epicId1));
+        int subtaskId0 = taskManager.createSubtask(new Subtask(0, "1", "1",
+                epicId1, StatusesOfTask.IN_PROGRESS));
         System.out.println(taskManager.getAllEpics());
         System.out.println(taskManager.getAllSubtasks());
         taskManager.updateEpic(new Epic(epicId1, "Епик 3", "Проверка эпика 3"));
@@ -71,7 +77,7 @@ public class Main {
         System.out.println("Создали 2 сабтаска");
         System.out.println(taskManager.getAllSubtasks());
         System.out.println("Обновление сабтаска");
-        taskManager.updateSubtask(new Subtask(subtaskId1, "Сабтаск 3", "Проверка сабтаска 3", StatusesOfTask.NEW, epicId1));
+        taskManager.updateSubtask(new Subtask(subtaskId1, "Сабтаск 3", "Проверка сабтаска 3", epicId1, StatusesOfTask.NEW));
         System.out.println(taskManager.getAllSubtasks());
         System.out.println("Проверка вывода всех сабтасков по айди эпика");
         System.out.println(taskManager.getAllSubtaskByEpicId(epicId1));
@@ -80,13 +86,13 @@ public class Main {
         System.out.println(taskManager.getAllSubtasks());
         int subtaskId3 = taskManager.createSubtask(new Subtask("Сабтаск 4", "Проверка сабтаска 4", epicId1));
         System.out.println("Проверка обновления статусов епиков");
-        taskManager.updateSubtask(new Subtask(subtaskId2, "Сабтаск 5", "Проверка сабтаска 5", StatusesOfTask.IN_PROGRESS, epicId1));
+        taskManager.updateSubtask(new Subtask(subtaskId2, "Сабтаск 5", "Проверка сабтаска 5", epicId1, StatusesOfTask.IN_PROGRESS));
         System.out.println(taskManager.getAllSubtasks());
         System.out.println(taskManager.getAllEpics());
-        taskManager.updateSubtask(new Subtask(subtaskId3, "Сабтаск 4", "Проверка сабтаска 4", StatusesOfTask.DONE, epicId1));
+        taskManager.updateSubtask(new Subtask(subtaskId3, "Сабтаск 4", "Проверка сабтаска 4", epicId1, StatusesOfTask.DONE));
         System.out.println(taskManager.getAllSubtasks());
         System.out.println(taskManager.getAllEpics());
-        taskManager.updateSubtask(new Subtask(subtaskId2, "Сабтаск 5", "Проверка сабтаска 5", StatusesOfTask.DONE, epicId1));
+        taskManager.updateSubtask(new Subtask(subtaskId2, "Сабтаск 5", "Проверка сабтаска 5", epicId1, StatusesOfTask.DONE));
         System.out.println(taskManager.getAllSubtasks());
         System.out.println(taskManager.getAllEpics());
         System.out.println("Удалить все сабтаски");
@@ -106,7 +112,7 @@ public class Main {
         taskManager.clearAllEpics();
 
         System.out.println("\nПроверка истории");
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
         int epicTest1 = taskManager.createEpic(new Epic("Test 1", "Testing 1"));
         int epicTest2 = taskManager.createEpic(new Epic("Test 2", "Testing 2"));
         int subtaskTest1 = taskManager.createSubtask(new Subtask("subtask 1", "subtaskDescription 1", epicTest1));
@@ -122,19 +128,19 @@ public class Main {
         System.out.println(taskManager.getSubtaskById(subtaskTest3));
 
         System.out.println("\nИстория после первого запроса");
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
 
         System.out.println("\nИстория при разных вызовах задач");
         taskManager.getSubtaskById(subtaskTest1);
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
         taskManager.getEpicById(epicTest2);
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
         taskManager.getSubtaskById(subtaskTest3);
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
         taskManager.getSubtaskById(subtaskTest2);
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
         taskManager.getEpicById(epicTest1);
-        System.out.println(taskManager.historyManager.getHistory());
+        System.out.println(taskManager.getHistoryManager().getHistory());
 
     }
 }

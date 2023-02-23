@@ -30,6 +30,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         FileBackedTasksManager fbTaskManager = new FileBackedTasksManager(new File("dataTasks.csv"));
+        fbTaskManager.clearAllTasks();
+        fbTaskManager.clearAllEpics();
 
         System.out.println("Test FileBackedTasksManager\n");
         int fbTask1 = fbTaskManager.createTask(new Task("task 1", "test Task 1"));
@@ -40,23 +42,29 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         int fbSubtask2 = fbTaskManager.createSubtask(new Subtask("Subtask 2", "test subtask 2", fbEpic1));
         int fbSubtask3 = fbTaskManager.createSubtask(new Subtask("Subtask 3", "test subtask 3", fbEpic2));
 
-        System.out.println(fbTaskManager.getAllTasks());
-        System.out.println(fbTaskManager.getAllEpics());
-        System.out.println(fbTaskManager.getAllSubtasks());
-        System.out.println(fbTaskManager.historyManager.getHistory());
+        System.out.println(fbTaskManager.getTaskById(fbTask1));
+        System.out.println(fbTaskManager.getTaskById(fbTask2));
+        System.out.println(fbTaskManager.getEpicById(fbEpic1));
+        System.out.println(fbTaskManager.getEpicById(fbEpic2));
+        System.out.println(fbTaskManager.getSubtaskById(fbSubtask1));
+        System.out.println(fbTaskManager.getSubtaskById(fbSubtask2));
+        System.out.println(fbTaskManager.getSubtaskById(fbSubtask3));
+
+        System.out.println(fbTaskManager.getHistoryManager().getHistory());
 
 
         FileBackedTasksManager fbTaskManager2 = FileBackedTasksManager.loadFromFile(
                 new File("dataTasks.csv"));
 
         System.out.println("\n\n Проверяем загрузку информации с файла... ");
-        System.out.println(fbTaskManager2.historyManager.getHistory());
+        System.out.println(fbTaskManager2.getHistoryManager().getHistory());
         System.out.println(fbTaskManager2.getAllTasks());
         System.out.println(fbTaskManager2.getAllEpics());
         System.out.println(fbTaskManager2.getAllSubtasks());
+
         int fbTask3 = fbTaskManager2.createTask(new Task("task 3", "Должен быть id = 8"));
         System.out.println(fbTaskManager2.getTaskById(fbTask3));
-        System.out.println(fbTaskManager2.historyManager.getHistory());
+        System.out.println(fbTaskManager2.getHistoryManager().getHistory());
     }
 
     /**
@@ -80,14 +88,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     for (int i = 1; i < bufferedStrings.size() - 2; i++) {//Работа с тасками
                         Task task = fileBackedTasksManager.fromString(bufferedStrings.get(i));
                         allTasks.put(task.getId(), task);
-                        fileBackedTasksManager.sortedTasks.add(task);
+                        if (task.getType() != TypeOfTasks.EPIC) {
+                            fileBackedTasksManager.sortedTasks.add(task);
+                        }
                     }
 
                     List<Integer> history = InMemoryHistoryManager.historyFromString(//Работа с историей
                             bufferedStrings.get(bufferedStrings.size() - 1));
                     for (int element : history) {
                         if (allTasks.containsKey(element)) {
-                            fileBackedTasksManager.historyManager.add(allTasks.get(element));
+                            fileBackedTasksManager.getHistoryManager().add(allTasks.get(element));
                         }
                     }
                     int maxId = 0;
@@ -111,7 +121,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     /**
      * Метод сохранения данных о тасках и истории в файл
      */
-    private void save() {
+    protected void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dataTasks, StandardCharsets.UTF_8, false))) {
             bufferedWriter.write("id,type,name,status,description,startTime,duration,epic\n");
             for (Task task : tasks.values()) {
@@ -126,7 +136,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
             }
             bufferedWriter.write("\n");
-            bufferedWriter.write(InMemoryHistoryManager.historyToString(historyManager));
+            bufferedWriter.write(InMemoryHistoryManager.historyToString(getHistoryManager()));
         } catch (IOException ioException) {
             throw new ManagerSaveException("Ошибка ввода-вывода.");
         }
@@ -150,7 +160,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             LocalDateTime startTime = LocalDateTime.parse(splitValue[5]);
             Duration duration = Duration.parse(splitValue[6]);
 
-
             switch (type) {
                 case TASK:
                     Task task = new Task(id, name, description, status, startTime, duration);
@@ -158,17 +167,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     return task;
 
                 case EPIC:
-                    Epic epic = new Epic(id, name, description, status);
+                    Epic epic = new Epic(id, name, description);
                     epics.put(id, epic);
                     return epic;
 
                 case SUBTASK:
                     int epicId = Integer.parseInt(splitValue[7]);
-                    Subtask subtask = new Subtask(id, name, description, status, epicId, startTime, duration);
+                    Subtask subtask = new Subtask(id, name, description, epicId, status, startTime, duration);
                     subtasks.put(id, subtask);
                     if (epics.containsKey(epicId)) {
                         epics.get(epicId).addSubtask(id);
                     }
+                    updateLocalDateTimeForEpic(epicId);
+                    updateStatusEpic(epicId);
+
                     return subtask;
 
                 default:
@@ -181,21 +193,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public ArrayList<Task> getAllTasks() {
         ArrayList<Task> listTasks = super.getAllTasks();
-        save();
         return listTasks;
     }
 
     @Override
     public ArrayList<Epic> getAllEpics() {
         ArrayList<Epic> listEpics = super.getAllEpics();
-        save();
         return listEpics;
     }
 
     @Override
     public ArrayList<Subtask> getAllSubtasks() {
         ArrayList<Subtask> listSubtask = super.getAllSubtasks();
-        save();
         return listSubtask;
     }
 

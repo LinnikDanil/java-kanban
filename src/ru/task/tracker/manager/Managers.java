@@ -12,7 +12,7 @@ public class Managers {
      * @return объект класса TaskManager
      */
     public static TaskManager getDefault(){
-        return new FileBackedTasksManager(new File("dataTasks.csv"));
+        return new HttpTaskManager();
     }
 
     /**
