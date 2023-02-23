@@ -3,16 +3,19 @@ package ru.task.tracker.manager.tasks;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.task.tracker.manager.FileBackedTasksManager;
 import ru.task.tracker.manager.Managers;
 import ru.task.tracker.manager.TaskManager;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
-    private final TaskManager taskManager = Managers.getDefault();
+    private final TaskManager taskManager = new FileBackedTasksManager(new File("dataTasks.csv"));
+
     private Epic epic;
     private int epicId;
     private Subtask subtask1;

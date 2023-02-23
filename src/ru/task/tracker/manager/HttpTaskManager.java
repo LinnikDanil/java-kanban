@@ -24,7 +24,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
     private final Gson gson;
 
     public HttpTaskManager() {
-        super(new File("dataTasks"));
+        super(null);
         URI uri = URI.create("http://localhost:" + PORT + "/register");
         gson = new Gson();
 

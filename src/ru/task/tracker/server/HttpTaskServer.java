@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import ru.task.tracker.manager.FileBackedTasksManager;
+import ru.task.tracker.manager.Managers;
 import ru.task.tracker.manager.TaskManager;
 import ru.task.tracker.manager.tasks.Epic;
 import ru.task.tracker.manager.tasks.Subtask;
@@ -32,7 +33,7 @@ public class HttpTaskServer {
     private Gson gsonForHandlers;
 
     public HttpTaskServer() throws IOException {
-        taskManagerForHandlers = FileBackedTasksManager.loadFromFile(new File("dataTasks.csv"));
+        taskManagerForHandlers = Managers.getDefault();
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
@@ -48,6 +49,7 @@ public class HttpTaskServer {
     }
 
     public static void main(String[] args) throws IOException {
+        new KVTaskClient().start();
         HttpTaskServer http = new HttpTaskServer();
     }
 
